@@ -65,12 +65,13 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
     final topPadding = _kPreviousPageVisibleOffset + topSafeAreaPadding;
 
     final shadow = this.shadow ?? _kDefaultBoxShadow;
-    BoxShadow(blurRadius: 10, color: Colors.black12, spreadRadius: 5);
+
     final backgroundColor = this.backgroundColor ??
         CupertinoTheme.of(context).scaffoldBackgroundColor;
+
     Widget bottomSheetContainer = Padding(
       padding: EdgeInsets.only(top: topPadding),
-      child: ClipRRect(
+      child: ClipRSuperellipse(
         borderRadius: BorderRadius.vertical(top: topRadius),
         child: Container(
           decoration:
