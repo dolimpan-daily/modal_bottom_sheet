@@ -120,6 +120,7 @@ Future<T?> showCupertinoModalBottomSheet<T>({
   BoxShadow? shadow,
   SystemUiOverlayStyle? overlayStyle,
   double? closeProgressThreshold,
+  Color? previousRouteOverlayColor,
 }) async {
   assert(debugCheckHasMediaQuery(context));
   final hasMaterialLocalizations =
@@ -156,7 +157,8 @@ Future<T?> showCupertinoModalBottomSheet<T>({
         duration: duration,
         settings: settings,
         transitionBackgroundColor: transitionBackgroundColor ?? Colors.black,
-        overlayStyle: overlayStyle),
+        overlayStyle: overlayStyle,
+        previousRouteOverlayColor: previousRouteOverlayColor),
   );
   return result;
 }
@@ -175,6 +177,9 @@ class CupertinoModalBottomSheetRoute<T> extends ModalSheetRoute<T> {
     'Will be ignored. OverlayStyle is computed from luminance of transitionBackgroundColor',
   )
   final SystemUiOverlayStyle? overlayStyle;
+
+  // Optional overlay color applied over the previous route snapshot during the transition
+  final Color? previousRouteOverlayColor;
 
   CupertinoModalBottomSheetRoute({
     required super.builder,
@@ -198,6 +203,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalSheetRoute<T> {
     this.transitionBackgroundColor,
     this.topRadius = _kDefaultTopRadius,
     this.previousRouteAnimationCurve,
+    this.previousRouteOverlayColor,
     this.overlayStyle,
   });
 
@@ -235,6 +241,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalSheetRoute<T> {
       animationCurve: previousRouteAnimationCurve,
       topRadius: topRadius,
       backgroundColor: transitionBackgroundColor ?? Colors.black,
+      previousRouteOverlayColor: previousRouteOverlayColor,
     );
   }
 }
@@ -245,6 +252,9 @@ class _CupertinoModalTransition extends StatelessWidget {
   final Curve? animationCurve;
   final Color backgroundColor;
 
+  // Optional overlay color applied over the previous route snapshot during the transition
+  final Color? previousRouteOverlayColor;
+
   final Widget body;
 
   const _CupertinoModalTransition({
@@ -253,6 +263,7 @@ class _CupertinoModalTransition extends StatelessWidget {
     required this.topRadius,
     this.backgroundColor = Colors.black,
     this.animationCurve,
+    this.previousRouteOverlayColor,
   });
 
   @override
@@ -269,53 +280,59 @@ class _CupertinoModalTransition extends StatelessWidget {
       curve: animationCurve ?? Curves.easeOut,
     );
 
-    return AnnotatedRegion(
-      // Make sure to match the system UI overlay style to the background color
-      // we insert below. Since all other content is pushed down, the background
-      // color will always be the one visible behind the status bar.
-      value: overlayStyleFromColor(backgroundColor),
-      child: Stack(
-        children: [
-          Positioned.fill(child: ColoredBox(color: backgroundColor)),
-          AnimatedBuilder(
-            animation: curvedAnimation,
-            child: CupertinoUserInterfaceLevel(
-              data: CupertinoUserInterfaceLevelData.base,
-              child: body,
-            ),
-            builder: (context, child) {
-              final progress = curvedAnimation.value;
-              final yOffset = progress * paddingTop;
-              final scale = 1 - progress / 10;
-              final radius = progress == 0
-                  ? 0.0
-                  : (1 - progress) * startRoundCorner + progress * topRadius.x;
-              return Transform.translate(
-                offset: Offset(0, yOffset),
-                child: Transform.scale(
-                  scale: scale,
-                  alignment: Alignment.topCenter,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(radius),
-                    child: CupertinoUserInterfaceLevel(
-                      data: CupertinoUserInterfaceLevelData.elevated,
-                      child: Builder(
-                        builder: (context) => CupertinoTheme(
-                          data: createPreviousRouteTheme(
-                            context,
-                            curvedAnimation,
+    return AnimatedBuilder(
+      animation: curvedAnimation,
+      child: body,
+      builder: (context, child) {
+        final progress = curvedAnimation.value;
+        final yOffset = progress * paddingTop;
+        final scale = 1 - progress / 10;
+        final radius = progress == 0
+            ? 0.0
+            : (1 - progress) * startRoundCorner + progress * topRadius.x;
+        return Stack(
+          children: <Widget>[
+            Container(color: backgroundColor),
+            Transform.translate(
+              offset: Offset(0, yOffset),
+              child: Transform.scale(
+                scale: scale,
+                alignment: Alignment.topCenter,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(radius),
+                  child: Stack(
+                    children: [
+                      CupertinoUserInterfaceLevel(
+                        data: CupertinoUserInterfaceLevelData.elevated,
+                        child: Builder(
+                          builder: (context) => CupertinoTheme(
+                            data: createPreviousRouteTheme(
+                              context,
+                              curvedAnimation,
+                            ),
+                            child: CupertinoUserInterfaceLevel(
+                              data: CupertinoUserInterfaceLevelData.base,
+                              child: child!,
+                            ),
                           ),
-                          child: child!,
                         ),
                       ),
-                    ),
+                      if (previousRouteOverlayColor != null)
+                        Positioned.fill(
+                          child: Opacity(
+                            opacity: progress,
+                            child:
+                                ColoredBox(color: previousRouteOverlayColor!),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
-              );
-            },
-          ),
-        ],
-      ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -446,6 +463,7 @@ class CupertinoScaffold extends StatefulWidget {
     Duration? duration,
     RouteSettings? settings,
     BoxShadow? shadow,
+    Color? previousRouteOverlayColor,
     @Deprecated(
       'Will be ignored. OverlayStyle is computed from luminance of transitionBackgroundColor',
     )
@@ -486,6 +504,7 @@ class CupertinoScaffold extends StatefulWidget {
       previousRouteAnimationCurve: previousRouteAnimationCurve,
       duration: duration,
       settings: settings,
+      previousRouteOverlayColor: previousRouteOverlayColor,
     ));
     return result;
   }
