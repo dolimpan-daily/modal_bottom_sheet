@@ -321,8 +321,9 @@ class _CupertinoModalTransition extends StatelessWidget {
                       if (previousRouteOverlayColor != null)
                         Positioned.fill(
                           child: ColoredBox(
-                            color: previousRouteOverlayColor!
-                                .withValues(alpha: progress),
+                            color: previousRouteOverlayColor!.withValues(
+                              alpha: previousRouteOverlayColor!.a * progress,
+                            ),
                           ),
                         ),
                     ],
