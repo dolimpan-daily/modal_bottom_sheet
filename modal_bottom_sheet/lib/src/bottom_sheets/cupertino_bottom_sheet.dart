@@ -75,7 +75,7 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
 
     Widget bottomSheetContainer = Padding(
       padding: EdgeInsets.only(top: topPadding),
-      child: ClipRSuperellipse(
+      child: ClipRRect(
         borderRadius: BorderRadius.vertical(top: topRadius),
         child: Container(
           decoration: _kBaseDecoration.copyWith(
@@ -310,7 +310,7 @@ class _CupertinoModalTransition extends StatelessWidget {
               child: Transform.scale(
                 scale: scale,
                 alignment: Alignment.topCenter,
-                child: ClipRSuperellipse(
+                child: ClipRRect(
                   borderRadius: BorderRadius.circular(radius),
                   child: Stack(
                     children: [
