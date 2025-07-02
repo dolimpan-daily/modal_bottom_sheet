@@ -50,6 +50,10 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
   final BoxShadow? shadow;
   final SystemUiOverlayStyle? overlayStyle;
 
+  // Cached decoration to avoid rebuilding identical BoxDecoration instances.
+  static const BoxDecoration _kBaseDecoration =
+      BoxDecoration(boxShadow: <BoxShadow>[_kDefaultBoxShadow]);
+
   const _CupertinoBottomSheetContainer({
     required this.child,
     this.backgroundColor,
@@ -74,8 +78,10 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
       child: ClipRSuperellipse(
         borderRadius: BorderRadius.vertical(top: topRadius),
         child: Container(
-          decoration:
-              BoxDecoration(color: backgroundColor, boxShadow: [shadow]),
+          decoration: _kBaseDecoration.copyWith(
+            color: backgroundColor,
+            boxShadow: [shadow],
+          ),
           width: double.infinity,
           child: MediaQuery.removePadding(
             context: context,
@@ -216,21 +222,25 @@ class CupertinoModalBottomSheetRoute<T> extends ModalSheetRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    final paddingTop = MediaQuery.of(context).padding.top;
-    final distanceWithScale = (paddingTop + _kPreviousPageVisibleOffset) * 0.9;
-    final offsetY = secondaryAnimation.value * (paddingTop - distanceWithScale);
-    final scale = 1 - secondaryAnimation.value / 10;
     return AnimatedBuilder(
-      builder: (context, child) => Transform.translate(
-        offset: Offset(0, offsetY),
-        child: Transform.scale(
-          scale: scale,
-          child: child,
-          alignment: Alignment.topCenter,
-        ),
-      ),
-      child: child,
       animation: secondaryAnimation,
+      child: child,
+      builder: (context, child) {
+        final paddingTop = MediaQuery.of(context).padding.top;
+        final distanceWithScale =
+            (paddingTop + _kPreviousPageVisibleOffset) * 0.9;
+        final offsetY =
+            secondaryAnimation.value * (paddingTop - distanceWithScale);
+        final scale = 1 - secondaryAnimation.value / 10;
+        return Transform.translate(
+          offset: Offset(0, offsetY),
+          child: Transform.scale(
+            scale: scale,
+            child: child,
+            alignment: Alignment.topCenter,
+          ),
+        );
+      },
     );
   }
 
@@ -423,8 +433,10 @@ class CupertinoScaffoldInheirted extends InheritedWidget {
   });
 
   @override
-  bool updateShouldNotify(InheritedWidget oldWidget) {
-    return false;
+  bool updateShouldNotify(covariant CupertinoScaffoldInheirted oldWidget) {
+    return topRadius != oldWidget.topRadius ||
+        transitionBackgroundColor != oldWidget.transitionBackgroundColor ||
+        animation != oldWidget.animation;
   }
 }
 
@@ -521,6 +533,12 @@ class _CupertinoScaffoldState extends State<CupertinoScaffold>
     animationController =
         AnimationController(duration: Duration(milliseconds: 350), vsync: this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
   }
 
   @override
