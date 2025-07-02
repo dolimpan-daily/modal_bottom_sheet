@@ -148,8 +148,10 @@ class ModalSheetRoute<T> extends PageRoute<T> {
     this.bounce = false,
     this.animationCurve,
     Duration? duration,
+    Duration? reverseDuration,
     super.settings,
-  }) : duration = duration ?? _bottomSheetDuration;
+  })  : duration = duration ?? _bottomSheetDuration,
+        reverseDuration = reverseDuration ?? (duration ?? _bottomSheetDuration);
 
   final double? closeProgressThreshold;
   final WidgetWithChildBuilder? containerBuilder;
@@ -161,10 +163,17 @@ class ModalSheetRoute<T> extends PageRoute<T> {
   final bool enableDrag;
   final ScrollController? scrollController;
 
+  /// Duration used when the route is popped (reverse animation).
+  /// Defaults to [duration] if not provided.
+  final Duration reverseDuration;
+
   final Duration duration;
 
   final AnimationController? secondAnimationController;
   final Curve? animationCurve;
+
+  @override
+  Duration get reverseTransitionDuration => reverseDuration;
 
   @override
   Duration get transitionDuration => duration;
@@ -189,9 +198,12 @@ class ModalSheetRoute<T> extends PageRoute<T> {
   @override
   AnimationController createAnimationController() {
     assert(_animationController == null);
-    _animationController = ModalBottomSheet.createAnimationController(
-      navigator!,
+    // Create controller with independent forward and reverse durations.
+    _animationController = AnimationController(
+      vsync: navigator!,
       duration: transitionDuration,
+      reverseDuration: reverseTransitionDuration,
+      debugLabel: 'BottomSheet',
     );
     return _animationController!;
   }
