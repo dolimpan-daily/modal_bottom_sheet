@@ -132,33 +132,34 @@ Future<T?> showCupertinoModalBottomSheet<T>({
   final result =
       await Navigator.of(context, rootNavigator: useRootNavigator).push(
     CupertinoModalBottomSheetRoute<T>(
-        builder: builder,
-        containerBuilder: (context, _, child) => _CupertinoBottomSheetContainer(
-              child: child,
-              backgroundColor: backgroundColor,
-              topRadius: topRadius,
-              shadow: shadow,
-              overlayStyle: overlayStyle,
-            ),
-        secondAnimationController: secondAnimation,
-        expanded: expand,
-        closeProgressThreshold: closeProgressThreshold,
-        barrierLabel: barrierLabel,
-        elevation: elevation,
-        bounce: bounce,
-        shape: shape,
-        clipBehavior: clipBehavior,
-        isDismissible: isDismissible ?? expand == false ? true : false,
-        modalBarrierColor: barrierColor ?? Colors.black12,
-        enableDrag: enableDrag,
+      builder: builder,
+      containerBuilder: (context, _, child) => _CupertinoBottomSheetContainer(
+        child: child,
+        backgroundColor: backgroundColor,
         topRadius: topRadius,
-        animationCurve: animationCurve,
-        previousRouteAnimationCurve: previousRouteAnimationCurve,
-        duration: duration,
-        settings: settings,
-        transitionBackgroundColor: transitionBackgroundColor ?? Colors.black,
+        shadow: shadow,
         overlayStyle: overlayStyle,
-        previousRouteOverlayColor: previousRouteOverlayColor),
+      ),
+      secondAnimationController: secondAnimation,
+      expanded: expand,
+      closeProgressThreshold: closeProgressThreshold,
+      barrierLabel: barrierLabel,
+      elevation: elevation,
+      bounce: bounce,
+      shape: shape,
+      clipBehavior: clipBehavior,
+      isDismissible: isDismissible ?? expand == false ? true : false,
+      modalBarrierColor: barrierColor ?? Colors.black12,
+      enableDrag: enableDrag,
+      topRadius: topRadius,
+      animationCurve: animationCurve,
+      previousRouteAnimationCurve: previousRouteAnimationCurve,
+      duration: duration,
+      settings: settings,
+      transitionBackgroundColor: transitionBackgroundColor ?? Colors.black,
+      overlayStyle: overlayStyle,
+      previousRouteOverlayColor: previousRouteOverlayColor,
+    ),
   );
   return result;
 }
@@ -298,7 +299,7 @@ class _CupertinoModalTransition extends StatelessWidget {
               child: Transform.scale(
                 scale: scale,
                 alignment: Alignment.topCenter,
-                child: ClipRRect(
+                child: ClipRSuperellipse(
                   borderRadius: BorderRadius.circular(radius),
                   child: Stack(
                     children: [
@@ -319,10 +320,9 @@ class _CupertinoModalTransition extends StatelessWidget {
                       ),
                       if (previousRouteOverlayColor != null)
                         Positioned.fill(
-                          child: Opacity(
-                            opacity: progress,
-                            child:
-                                ColoredBox(color: previousRouteOverlayColor!),
+                          child: ColoredBox(
+                            color: previousRouteOverlayColor!
+                                .withValues(alpha: progress),
                           ),
                         ),
                     ],
