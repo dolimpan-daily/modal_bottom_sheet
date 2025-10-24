@@ -18,10 +18,7 @@ class FitSheet extends StatelessWidget {
       },
       child: Sheet(
         elevation: 4,
-        child: Container(
-          height: 400,
-          child: const Text('hello'),
-        ),
+        child: Container(height: 400, child: const Text('hello')),
       ),
     );
   }

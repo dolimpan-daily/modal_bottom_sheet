@@ -32,26 +32,32 @@ class _AdvancedSnapSheetPageState extends State<AdvancedSnapSheetPage>
         unselectedItemColor: Colors.grey[400],
         selectedItemColor: Theme.of(context).primaryColor,
         onTap: (int index) {
-          controller.relativeAnimateTo(0.3,
-              duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+          controller.relativeAnimateTo(
+            0.3,
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeIn,
+          );
         },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              label: 'Explore', icon: Icon(Icons.place_outlined)),
+            label: 'Explore',
+            icon: Icon(Icons.place_outlined),
+          ),
           BottomNavigationBarItem(label: 'Go', icon: Icon(Icons.bus_alert)),
           BottomNavigationBarItem(
-              label: 'Saved', icon: Icon(Icons.bookmark_border)),
+            label: 'Saved',
+            icon: Icon(Icons.bookmark_border),
+          ),
           BottomNavigationBarItem(
-              label: 'Updates', icon: Icon(Icons.add_alert_outlined)),
+            label: 'Updates',
+            icon: Icon(Icons.add_alert_outlined),
+          ),
         ],
       ),
       body: Stack(
         children: <Widget>[
           Positioned.fill(
-            child: Image.asset(
-              'assets/map.png',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/map.png', fit: BoxFit.cover),
           ),
           FloatingButtons(controller: controller),
           Positioned.fill(
@@ -111,15 +117,18 @@ class _MapAppBarState extends State<MapAppBar> {
                 tween: Tween<double>(begin: 0.0, end: sheetBar ? 1 : 0),
                 duration: Duration(milliseconds: 200),
                 builder: (BuildContext context, double t, Widget? child) {
-                  final double elevation =
-                      Tween<double>(begin: 4.0, end: 0.0).transform(t);
+                  final double elevation = Tween<double>(
+                    begin: 4.0,
+                    end: 0.0,
+                  ).transform(t);
                   final Color? color = ColorTween(
-                          begin: Colors.white.withOpacity(0), end: Colors.white)
-                      .transform(t);
+                    begin: Colors.white.withOpacity(0),
+                    end: Colors.white,
+                  ).transform(t);
                   final Color? borderColor = ColorTween(
-                          begin: Colors.grey[200]!.withOpacity(0),
-                          end: Colors.grey[200])
-                      .transform(t);
+                    begin: Colors.grey[200]!.withOpacity(0),
+                    end: Colors.grey[200],
+                  ).transform(t);
                   return AppBar(
                     elevation: 0,
                     systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -134,8 +143,10 @@ class _MapAppBarState extends State<MapAppBar> {
                           hintText: 'Search here',
                           fillColor: Colors.white,
                           filled: true,
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(24),
                             borderSide: BorderSide(color: borderColor!),
@@ -150,7 +161,8 @@ class _MapAppBarState extends State<MapAppBar> {
                   );
                 },
               );
-            })
+            },
+          )
         : AppBar(
             elevation: 1,
             systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -160,12 +172,16 @@ class _MapAppBarState extends State<MapAppBar> {
             title: Text('Latest near you'),
             leading: IconButton(
               onPressed: () async {
-                await widget.controller.position.scrollController.animateTo(0,
-                    duration: Duration(milliseconds: 200),
-                    curve: Curves.easeIn);
-                await widget.controller.relativeAnimateTo(0.3,
-                    duration: Duration(milliseconds: 200),
-                    curve: Curves.easeOut);
+                await widget.controller.position.scrollController.animateTo(
+                  0,
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeIn,
+                );
+                await widget.controller.relativeAnimateTo(
+                  0.3,
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeOut,
+                );
               },
               icon: Icon(Icons.arrow_downward),
             ),
@@ -182,45 +198,47 @@ class FloatingButtons extends StatelessWidget {
     final double height =
         mediaQuery.size.height - mediaQuery.padding.top - kToolbarHeight;
     return AnimatedBuilder(
-        animation: controller.animation,
-        builder: (BuildContext context, Widget? child) {
-          return Positioned(
-              right: 0,
-              bottom: height * min(0.3, controller.animation.value),
-              child: Container(
-                margin: EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    FloatingActionButton(
-                      child: Icon(Icons.location_searching),
-                      foregroundColor: Theme.of(context).primaryColor,
-                      backgroundColor: Colors.white,
-                      key: Key('value'),
-                      heroTag: 'ggg',
-                      onPressed: () {
-                        controller.relativeAnimateTo(
-                          0.1,
-                          duration: Duration(milliseconds: 200),
-                          curve: Curves.easeIn,
-                        );
-                      },
-                    ),
-                    SizedBox(height: 8),
-                    FloatingActionButton(
-                      child: Icon(Icons.directions),
-                      onPressed: () {
-                        controller.relativeAnimateTo(
-                          0.1,
-                          duration: Duration(milliseconds: 200),
-                          curve: Curves.easeIn,
-                        );
-                      },
-                    ),
-                  ],
+      animation: controller.animation,
+      builder: (BuildContext context, Widget? child) {
+        return Positioned(
+          right: 0,
+          bottom: height * min(0.3, controller.animation.value),
+          child: Container(
+            margin: EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                FloatingActionButton(
+                  child: Icon(Icons.location_searching),
+                  foregroundColor: Theme.of(context).primaryColor,
+                  backgroundColor: Colors.white,
+                  key: Key('value'),
+                  heroTag: 'ggg',
+                  onPressed: () {
+                    controller.relativeAnimateTo(
+                      0.1,
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeIn,
+                    );
+                  },
                 ),
-              ));
-        });
+                SizedBox(height: 8),
+                FloatingActionButton(
+                  child: Icon(Icons.directions),
+                  onPressed: () {
+                    controller.relativeAnimateTo(
+                      0.1,
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeIn,
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -233,9 +251,7 @@ class MapSheet extends StatelessWidget {
       backgroundColor: Colors.transparent,
       initialExtent: 120,
       controller: controller,
-      physics: SnapSheetPhysics(
-        stops: const <double>[0, 0.1, 0.3, 1],
-      ),
+      physics: SnapSheetPhysics(stops: const <double>[0, 0.1, 0.3, 1]),
       /*   snap: true,
                 stops: [0, 0.1, 0.3, 0.5, 1], */
       child: AnimatedBuilder(
@@ -243,34 +259,38 @@ class MapSheet extends StatelessWidget {
         builder: (BuildContext context, Widget? child) {
           final bool sheetBar = controller.animation.value > 0.95;
           return TweenAnimationBuilder<double>(
-              tween: Tween<double>(begin: 0.0, end: sheetBar ? 1 : 0),
-              duration: Duration(milliseconds: 200),
-              builder: (BuildContext context, double t, Widget? child) {
-                final double radius =
-                    Tween<double>(begin: 16.0, end: 0.0).transform(t);
+            tween: Tween<double>(begin: 0.0, end: sheetBar ? 1 : 0),
+            duration: Duration(milliseconds: 200),
+            builder: (BuildContext context, double t, Widget? child) {
+              final double radius = Tween<double>(
+                begin: 16.0,
+                end: 0.0,
+              ).transform(t);
 
-                final Color? shadow = ColorTween(
-                        begin: Colors.black26,
-                        end: Colors.black26.withOpacity(0))
-                    .transform(t);
-                final Color? barColor = ColorTween(
-                        begin: Colors.grey[200],
-                        end: Colors.grey[200]?.withOpacity(0))
-                    .transform(t);
-                return MediaQuery.removePadding(
-                  context: context,
-                  removeTop: true,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(radius),
-                          topRight: Radius.circular(radius),
-                        ),
-                        color: Colors.white,
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(color: shadow!, blurRadius: 12),
-                        ]),
-                    child: Column(children: <Widget>[
+              final Color? shadow = ColorTween(
+                begin: Colors.black26,
+                end: Colors.black26.withOpacity(0),
+              ).transform(t);
+              final Color? barColor = ColorTween(
+                begin: Colors.grey[200],
+                end: Colors.grey[200]?.withOpacity(0),
+              ).transform(t);
+              return MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(radius),
+                      topRight: Radius.circular(radius),
+                    ),
+                    color: Colors.white,
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(color: shadow!, blurRadius: 12),
+                    ],
+                  ),
+                  child: Column(
+                    children: <Widget>[
                       Container(
                         margin: EdgeInsets.all(8),
                         width: 36,
@@ -290,24 +310,25 @@ class MapSheet extends StatelessWidget {
                                 return Container(
                                   child: Text(
                                     'Latest near you',
-                                    style:
-                                        Theme.of(context).textTheme.titleLarge,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.titleLarge,
                                   ),
                                   padding: EdgeInsets.all(20),
                                   alignment: Alignment.centerLeft,
                                 );
                               }
-                              return ListTile(
-                                title: Text('Item $index'),
-                              );
+                              return ListTile(title: Text('Item $index'));
                             }),
                           ).toList(),
                         ),
                       ),
-                    ]),
+                    ],
                   ),
-                );
-              });
+                ),
+              );
+            },
+          );
         },
       ),
     );

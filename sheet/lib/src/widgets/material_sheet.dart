@@ -23,8 +23,9 @@ class MaterialSheet extends Sheet {
 
   @override
   Widget decorationBuild(BuildContext context, Widget child) {
-    final BottomSheetThemeData bottomSheetTheme =
-        Theme.of(context).bottomSheetTheme;
+    final BottomSheetThemeData bottomSheetTheme = Theme.of(
+      context,
+    ).bottomSheetTheme;
     final Color? color = backgroundColor ?? bottomSheetTheme.backgroundColor;
     final double elevation = this.elevation ?? bottomSheetTheme.elevation ?? 0;
     final ShapeBorder? shape = this.shape ?? bottomSheetTheme.shape;

@@ -159,8 +159,9 @@ class RouteExamplePage extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      title:
-                          const Text('Cupertino Scrollable Sheet with stops'),
+                      title: const Text(
+                        'Cupertino Scrollable Sheet with stops',
+                      ),
                       onTap: () {
                         Navigator.of(context).push(
                           CupertinoSheetRoute<void>(
@@ -186,8 +187,9 @@ class RouteExamplePage extends StatelessWidget {
                     ),
                     const SectionTitle('COMPLEX CASES'),
                     ListTile(
-                      title:
-                          const Text('Cupertino Small Modal forced to expand'),
+                      title: const Text(
+                        'Cupertino Small Modal forced to expand',
+                      ),
                       onTap: () {
                         Navigator.of(context).push(
                           CupertinoSheetRoute<void>(
@@ -195,9 +197,9 @@ class RouteExamplePage extends StatelessWidget {
                               body: Builder(
                                 builder: (BuildContext context) =>
                                     SingleChildScrollView(
-                                  primary: true,
-                                  child: Container(),
-                                ),
+                                      primary: true,
+                                      child: Container(),
+                                    ),
                               ),
                             ),
                           ),
@@ -224,8 +226,9 @@ class RouteExamplePage extends StatelessWidget {
                       ),
                     ),
                     ListTile(
-                      title:
-                          const Text('Cupertino Modal with inside navigation'),
+                      title: const Text(
+                        'Cupertino Modal with inside navigation',
+                      ),
                       onTap: () => Navigator.of(context).push(
                         CupertinoSheetRoute<void>(
                           builder: (BuildContext context) =>
@@ -234,8 +237,9 @@ class RouteExamplePage extends StatelessWidget {
                       ),
                     ),
                     ListTile(
-                      title:
-                          const Text('Cupertino Navigator + Scroll + PopScope'),
+                      title: const Text(
+                        'Cupertino Navigator + Scroll + PopScope',
+                      ),
                       onTap: () => Navigator.of(context).push(
                         CupertinoSheetRoute<void>(
                           builder: (BuildContext context) =>
@@ -305,7 +309,7 @@ class RouteExamplePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 60)
+                    const SizedBox(height: 60),
                   ],
                 ),
               ),
@@ -324,18 +328,12 @@ class RouteExamplePage extends StatelessWidget {
 class SectionTitle extends StatelessWidget {
   final String title;
 
-  const SectionTitle(
-    this.title, {
-    super.key,
-  });
+  const SectionTitle(this.title, {super.key});
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.bodySmall,
-      ),
+      child: Text(title, style: Theme.of(context).textTheme.bodySmall),
     );
   }
 }
@@ -343,8 +341,7 @@ class SectionTitle extends StatelessWidget {
 extension ListUtils<T> on List<T> {
   List<T> addItemInBetween(T item) => length <= 1
       ? this
-      : sublist(1).fold(
-          <T>[first],
-          (List<T> r, T element) => <T>[...r, item, element],
-        );
+      : sublist(
+          1,
+        ).fold(<T>[first], (List<T> r, T element) => <T>[...r, item, element]);
 }

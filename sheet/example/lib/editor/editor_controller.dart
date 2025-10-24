@@ -35,17 +35,17 @@ class SheetConfiguration extends Equatable {
 
   @override
   List<Object?> get props => <Object?>[
-        minExtent,
-        maxExtent,
-        borderRadius,
-        type,
-        bounce,
-        fit,
-        childrenCount,
-        padding,
-        stops,
-        draggable,
-      ];
+    minExtent,
+    maxExtent,
+    borderRadius,
+    type,
+    bounce,
+    fit,
+    childrenCount,
+    padding,
+    stops,
+    draggable,
+  ];
 
   SheetConfiguration copyWith({
     double? minExtent,

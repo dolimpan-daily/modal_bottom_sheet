@@ -4,14 +4,13 @@ import 'package:sheet/sheet.dart';
 
 void main() {
   group('DefaultSheetController', () {
-    testWidgets('DefaultSheetController injects a SheetController',
-        (tester) async {
+    testWidgets('DefaultSheetController injects a SheetController', (
+      tester,
+    ) async {
       final childKey = UniqueKey();
       await tester.pumpWidget(
         MaterialApp(
-          home: DefaultSheetController(
-            child: SizedBox(key: childKey),
-          ),
+          home: DefaultSheetController(child: SizedBox(key: childKey)),
         ),
       );
       await tester.pumpAndSettle();
@@ -24,9 +23,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: DefaultSheetController(
-            child: Sheet(
-              child: SizedBox(key: childKey),
-            ),
+            child: Sheet(child: SizedBox(key: childKey)),
           ),
         ),
       );
@@ -41,14 +38,14 @@ void main() {
       late StateSetter setState;
       await tester.pumpWidget(
         MaterialApp(
-          home: StatefulBuilder(builder: (context, stateSetter) {
-            setState = stateSetter;
-            return DefaultSheetController(
-              child: Sheet(
-                child: SizedBox(key: childKey),
-              ),
-            );
-          }),
+          home: StatefulBuilder(
+            builder: (context, stateSetter) {
+              setState = stateSetter;
+              return DefaultSheetController(
+                child: Sheet(child: SizedBox(key: childKey)),
+              );
+            },
+          ),
         ),
       );
       await tester.pumpAndSettle();

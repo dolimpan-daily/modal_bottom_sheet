@@ -7,11 +7,7 @@ import '../../../helpers.dart';
 void main() {
   group('SheetPosition', () {
     testWidgets('can prevent drag', (WidgetTester tester) async {
-      await tester.pumpApp(
-        Sheet(
-          child: SizedBox(height: 200),
-        ),
-      );
+      await tester.pumpApp(Sheet(child: SizedBox(height: 200)));
       final position = tester.getSheetPosition();
       expect(position.preventingDrag, false);
       position.preventDrag();
@@ -19,11 +15,7 @@ void main() {
     });
 
     testWidgets('can stops preventing drag', (WidgetTester tester) async {
-      await tester.pumpApp(
-        Sheet(
-          child: SizedBox(height: 200),
-        ),
-      );
+      await tester.pumpApp(Sheet(child: SizedBox(height: 200)));
       final position = tester.getSheetPosition();
       position.preventDrag();
       expect(position.preventingDrag, true);

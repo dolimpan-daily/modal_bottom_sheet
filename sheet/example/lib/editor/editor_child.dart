@@ -22,10 +22,7 @@ class EmptyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 200,
-      alignment: Alignment.topCenter,
-    );
+    return Container(height: 200, alignment: Alignment.topCenter);
   }
 }
 
@@ -61,7 +58,7 @@ class ColumnWidget extends StatelessWidget {
           title: const Text('Delete'),
           leading: const Icon(Icons.delete),
           onTap: () {},
-        )
+        ),
       ],
     );
   }
@@ -72,9 +69,11 @@ class ListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int count = context.select(
-            (SheetConfigurationController? controller) =>
-                controller?.value.childrenCount) ??
+    final int count =
+        context.select(
+          (SheetConfigurationController? controller) =>
+              controller?.value.childrenCount,
+        ) ??
         100;
     return ListView(
       shrinkWrap: true,
@@ -93,9 +92,7 @@ class ListWidget extends StatelessWidget {
               alignment: Alignment.center,
             );
           }
-          return ListTile(
-            title: Text('Item $index'),
-          );
+          return ListTile(title: Text('Item $index'));
         }),
       ).toList(),
     );

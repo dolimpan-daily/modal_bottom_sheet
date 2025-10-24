@@ -10,7 +10,7 @@ class ExampleTile extends StatelessWidget {
   });
 
   ExampleTile.sheet(this.title, Widget sheet, {this.leading})
-      : page = BaseScaffold(title: Text(title), sheet: sheet);
+    : page = BaseScaffold(title: Text(title), sheet: sheet);
 
   final String title;
   final Widget page;
@@ -21,11 +21,9 @@ class ExampleTile extends StatelessWidget {
     return ListTile(
       leading: leading,
       title: Text(title),
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute<void>(
-          builder: (BuildContext context) => page,
-        ),
-      ),
+      onTap: () => Navigator.of(
+        context,
+      ).push(MaterialPageRoute<void>(builder: (BuildContext context) => page)),
     );
   }
 }
@@ -60,14 +58,12 @@ class BaseScaffold extends StatelessWidget {
             width: double.infinity,
             alignment: Alignment.center,
             child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: Text('Item $index'),
-                onTap: () {},
-              );
-            }),
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(title: Text('Item $index'), onTap: () {});
+              },
+            ),
           ),
-          if (sheet != null) sheet!
+          if (sheet != null) sheet!,
         ],
       ),
     );

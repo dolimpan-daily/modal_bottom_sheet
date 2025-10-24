@@ -17,8 +17,11 @@ class _FitSheetState extends State<FloatingSheet> {
   }
 
   void animateSheet() {
-    controller.relativeAnimateTo(1,
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+    controller.relativeAnimateTo(
+      1,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeOut,
+    );
   }
 
   @override

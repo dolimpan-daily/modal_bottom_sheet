@@ -34,8 +34,8 @@ enum SheetFit {
   expand,
 }
 
-typedef SheetDecorationBuilder = Widget Function(
-    BuildContext context, Widget child);
+typedef SheetDecorationBuilder =
+    Widget Function(BuildContext context, Widget child);
 
 /// A material design bottom sheet.
 ///
@@ -99,11 +99,11 @@ class Sheet extends StatelessWidget {
     this.resizable = false,
     this.padding = EdgeInsets.zero,
     this.minResizableExtent,
-  })  : decorationBuilder = decorationBuilder ?? _emptyDecorationBuilder,
-        shape = null,
-        elevation = null,
-        backgroundColor = null,
-        clipBehavior = null;
+  }) : decorationBuilder = decorationBuilder ?? _emptyDecorationBuilder,
+       shape = null,
+       elevation = null,
+       backgroundColor = null,
+       clipBehavior = null;
 
   final Widget child;
 
@@ -224,10 +224,12 @@ class Sheet extends StatelessWidget {
   }
 
   Widget decorationBuild(BuildContext context, Widget child) {
-    final SheetDecorationBuilder decorationBuilder = this.decorationBuilder ??
+    final SheetDecorationBuilder decorationBuilder =
+        this.decorationBuilder ??
         (BuildContext context, Widget child) {
-          final BottomSheetThemeData bottomSheetTheme =
-              Theme.of(context).bottomSheetTheme;
+          final BottomSheetThemeData bottomSheetTheme = Theme.of(
+            context,
+          ).bottomSheetTheme;
           final Color? color =
               backgroundColor ?? bottomSheetTheme.backgroundColor;
           final double elevation =
@@ -251,8 +253,10 @@ class Sheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final SheetController? effectiveController =
         controller ?? DefaultSheetController.of(context);
-    final double? initialExtent =
-        this.initialExtent?.clamp(minExtent ?? 0, maxExtent ?? double.infinity);
+    final double? initialExtent = this.initialExtent?.clamp(
+      minExtent ?? 0,
+      maxExtent ?? double.infinity,
+    );
     return SheetScrollable(
       initialExtent: initialExtent,
       minInteractionExtent: minInteractionExtent,
@@ -319,11 +323,8 @@ class _DefaultSheetScrollController extends StatelessWidget {
 ///  * [SheetPosition], which manages the positioning logic for
 ///    this controller.
 class SheetController extends ScrollController {
-  SheetController({
-    super.debugLabel,
-    super.onAttach,
-    super.onDetach,
-  }) : super(initialScrollOffset: 0);
+  SheetController({super.debugLabel, super.onAttach, super.onDetach})
+    : super(initialScrollOffset: 0);
 
   final ProxyAnimation _animation = ProxyAnimation();
   Animation<double> get animation => _animation;
@@ -368,8 +369,9 @@ class SheetController extends ScrollController {
     ScrollContext context,
     ScrollPosition? oldPosition,
   ) {
-    final double? initialPixels =
-        (context is SheetContext) ? context.initialExtent : null;
+    final double? initialPixels = (context is SheetContext)
+        ? context.initialExtent
+        : null;
     return SheetPosition(
       physics: physics,
       context: context as SheetContext,
@@ -378,20 +380,30 @@ class SheetController extends ScrollController {
     );
   }
 
-  Future<void> relativeAnimateTo(double offset,
-      {required Duration duration, required Curve curve}) async {
-    assert(positions.isNotEmpty,
-        'ScrollController not attached to any scroll views.');
+  Future<void> relativeAnimateTo(
+    double offset, {
+    required Duration duration,
+    required Curve curve,
+  }) async {
+    assert(
+      positions.isNotEmpty,
+      'ScrollController not attached to any scroll views.',
+    );
     await Future.wait<void>(<Future<void>>[
       for (final ScrollPosition position in positions)
-        (position as SheetPosition)
-            .relativeAnimateTo(offset, duration: duration, curve: curve),
+        (position as SheetPosition).relativeAnimateTo(
+          offset,
+          duration: duration,
+          curve: curve,
+        ),
     ]);
   }
 
   void relativeJumpTo(double offset) {
-    assert(positions.isNotEmpty,
-        'ScrollController not attached to any scroll views.');
+    assert(
+      positions.isNotEmpty,
+      'ScrollController not attached to any scroll views.',
+    );
     for (final ScrollPosition position in positions) {
       (position as SheetPosition).relativeJumpTo(offset);
     }
@@ -425,8 +437,11 @@ class SheetPosition extends ScrollPositionWithSingleContext {
 
   SheetPrimaryScrollController get scrollController => _scrollController;
 
-  Future<void> relativeAnimateTo(double to,
-      {required Duration duration, required Curve curve}) {
+  Future<void> relativeAnimateTo(
+    double to, {
+    required Duration duration,
+    required Curve curve,
+  }) {
     assert(to >= 0 && to <= 1);
     return super.animateTo(
       pixelsFromRelativeOffset(to, minScrollExtent, maxScrollExtent),
@@ -436,16 +451,25 @@ class SheetPosition extends ScrollPositionWithSingleContext {
   }
 
   @override
-  Future<void> animateTo(double to,
-      {required Duration duration, required Curve curve}) {
-    return super.animateTo(to.clamp(minScrollExtent, maxScrollExtent),
-        duration: duration, curve: curve);
+  Future<void> animateTo(
+    double to, {
+    required Duration duration,
+    required Curve curve,
+  }) {
+    return super.animateTo(
+      to.clamp(minScrollExtent, maxScrollExtent),
+      duration: duration,
+      curve: curve,
+    );
   }
 
   void relativeJumpTo(double to) {
     assert(to >= 0 && to <= 1);
-    final value =
-        pixelsFromRelativeOffset(to, minScrollExtent, maxScrollExtent);
+    final value = pixelsFromRelativeOffset(
+      to,
+      minScrollExtent,
+      maxScrollExtent,
+    );
     return super.jumpTo(value);
   }
 
@@ -465,8 +489,9 @@ class SheetPosition extends ScrollPositionWithSingleContext {
     _preventingDrag = false;
   }
 
-  late final AnimationController _controller =
-      AnimationController(vsync: context.vsync);
+  late final AnimationController _controller = AnimationController(
+    vsync: context.vsync,
+  );
 
   Animation<double> get animation => _controller;
 
@@ -568,7 +593,9 @@ class SheetViewport extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, RenderSheetViewport renderObject) {
+    BuildContext context,
+    RenderSheetViewport renderObject,
+  ) {
     // Order dependency: The offset setter reads the axis direction.
     renderObject
       ..axisDirection = axisDirection
@@ -593,14 +620,14 @@ class RenderSheetViewport extends RenderBox
     double? minExtent,
     double? maxExtent,
     bool? resizeable,
-  })  : _axisDirection = axisDirection,
-        _offset = offset,
-        _fit = fit,
-        _minExtent = minExtent,
-        _maxExtent = maxExtent,
-        _cacheExtent = cacheExtent,
-        _resizeable = resizeable ?? false,
-        _clipBehavior = clipBehavior {
+  }) : _axisDirection = axisDirection,
+       _offset = offset,
+       _fit = fit,
+       _minExtent = minExtent,
+       _maxExtent = maxExtent,
+       _cacheExtent = cacheExtent,
+       _resizeable = resizeable ?? false,
+       _clipBehavior = clipBehavior {
     this.child = child;
   }
 
@@ -958,7 +985,8 @@ class RenderSheetViewport extends RenderBox
         break;
     }
 
-    final double targetOffset = leadingScrollOffset -
+    final double targetOffset =
+        leadingScrollOffset -
         (mainAxisExtent - targetMainAxisExtent) * alignment;
     final Rect targetRect = bounds.shift(_paintOffsetForPosition(targetOffset));
     return RevealedOffset(offset: targetOffset, rect: targetRect);

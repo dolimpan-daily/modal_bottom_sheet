@@ -14,9 +14,7 @@ void main() {
             physics: const NeverDraggableSheetPhysics(parent: null),
             initialExtent: kScreenSize.height,
             fit: SheetFit.expand,
-            child: Container(
-              color: Colors.red,
-            ),
+            child: Container(color: Colors.red),
           ),
         );
         await tester.pumpAndSettle();
@@ -27,8 +25,9 @@ void main() {
 
       test('should not reload', () async {
         expect(
-          const NeverDraggableSheetPhysics()
-              .shouldReload(const NeverDraggableSheetPhysics()),
+          const NeverDraggableSheetPhysics().shouldReload(
+            const NeverDraggableSheetPhysics(),
+          ),
           isFalse,
         );
       });
@@ -41,16 +40,16 @@ void main() {
             physics: const AlwaysDraggableSheetPhysics(),
             initialExtent: kScreenSize.height,
             fit: SheetFit.expand,
-            child: Container(
-              color: Colors.red,
-            ),
+            child: Container(color: Colors.red),
           ),
         );
         await tester.pumpAndSettle();
         expect(tester.getRect(find.byType(Container)), kScreenRect);
         await tester.drag(find.byType(Container), const Offset(0, 100));
-        expect(tester.getRect(find.byType(Container)),
-            kScreenRect.translate(0, 100));
+        expect(
+          tester.getRect(find.byType(Container)),
+          kScreenRect.translate(0, 100),
+        );
       });
     });
     group('BouncingSheetPhysics', () {
@@ -124,7 +123,9 @@ void main() {
         );
 
         final double easingApplied = physicsUnderTest.applyPhysicsToUserOffset(
-            overscrolledPosition, -10.0);
+          overscrolledPosition,
+          -10.0,
+        );
 
         expect(easingApplied, lessThan(-0.1));
         expect(easingApplied, greaterThan(-10.0));
@@ -161,7 +162,9 @@ void main() {
         );
 
         final double easingApplied = physicsUnderTest.applyPhysicsToUserOffset(
-            overscrolledPosition, -10.0);
+          overscrolledPosition,
+          -10.0,
+        );
         final double tensioningApplied = physicsUnderTest
             .applyPhysicsToUserOffset(overscrolledPosition, 10.0);
 
@@ -200,8 +203,7 @@ void main() {
       });
 
       group('applyBoundaryConditions', () {
-        test(
-            'throws when proposed pixels '
+        test('throws when proposed pixels '
             'are the same as the current ones', () {
           final ScrollMetrics scrollMetrics = FixedScrollMetrics(
             minScrollExtent: 0.0,
@@ -219,8 +221,9 @@ void main() {
 
         group('when overflowViewport', () {
           test('does not appyBoundaryConditions top edge', () {
-            const BouncingSheetPhysics physicsUnderTest =
-                BouncingSheetPhysics(overflowViewport: true);
+            const BouncingSheetPhysics physicsUnderTest = BouncingSheetPhysics(
+              overflowViewport: true,
+            );
 
             final ScrollMetrics scrollMetrics = FixedScrollMetrics(
               minScrollExtent: 0.0,
@@ -240,8 +243,9 @@ void main() {
             );
           });
           test('does appyBoundaryConditions bottom edge', () {
-            const BouncingSheetPhysics physicsUnderTest =
-                BouncingSheetPhysics(overflowViewport: true);
+            const BouncingSheetPhysics physicsUnderTest = BouncingSheetPhysics(
+              overflowViewport: true,
+            );
 
             final ScrollMetrics scrollMetrics = FixedScrollMetrics(
               minScrollExtent: 0.0,
@@ -356,9 +360,7 @@ void main() {
           physics: const SnapSheetPhysics(stops: <double>[0, 1]),
           initialExtent: kScreenSize.height,
           fit: SheetFit.expand,
-          child: Container(
-            color: Colors.red,
-          ),
+          child: Container(color: Colors.red),
         ),
       );
       await tester.pumpAndSettle();

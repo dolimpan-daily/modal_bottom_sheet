@@ -19,28 +19,28 @@ class SheetMediaQuery extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Sheet.of(context)!.controller;
     final MediaQueryData data = MediaQuery.of(context);
-    return LayoutBuilder(builder: (context, constraints) {
-      return AnimatedBuilder(
-        animation: controller.animation,
-        builder: (BuildContext context, Widget? child) {
-          final position = controller.position;
-          final viewportDimension = position.hasViewportDimension
-              ? position.viewportDimension
-              : double.infinity;
-          final pixels = position.hasPixels ? position.pixels : 0;
-          final offset = viewportDimension - pixels;
-          final topPadding = math.max(0.0, data.padding.top - offset);
-          return MediaQuery(
-            data: data.copyWith(
-              padding: data.padding.copyWith(
-                top: topPadding,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return AnimatedBuilder(
+          animation: controller.animation,
+          builder: (BuildContext context, Widget? child) {
+            final position = controller.position;
+            final viewportDimension = position.hasViewportDimension
+                ? position.viewportDimension
+                : double.infinity;
+            final pixels = position.hasPixels ? position.pixels : 0;
+            final offset = viewportDimension - pixels;
+            final topPadding = math.max(0.0, data.padding.top - offset);
+            return MediaQuery(
+              data: data.copyWith(
+                padding: data.padding.copyWith(top: topPadding),
               ),
-            ),
-            child: child!,
-          );
-        },
-        child: child,
-      );
-    });
+              child: child!,
+            );
+          },
+          child: child,
+        );
+      },
+    );
   }
 }

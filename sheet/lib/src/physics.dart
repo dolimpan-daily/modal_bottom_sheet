@@ -40,17 +40,16 @@ class AlwaysDraggableSheetPhysics extends AlwaysScrollableScrollPhysics
 /// Creates sheet physics that bounce back from the edge.
 class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
   /// Creates sheet physics that bounce back from the edge.
-  const BouncingSheetPhysics({
-    super.parent,
-    this.overflowViewport = false,
-  });
+  const BouncingSheetPhysics({super.parent, this.overflowViewport = false});
 
   final bool overflowViewport;
 
   @override
   BouncingSheetPhysics applyTo(ScrollPhysics? ancestor) {
     return BouncingSheetPhysics(
-        parent: buildParent(ancestor), overflowViewport: overflowViewport);
+      parent: buildParent(ancestor),
+      overflowViewport: overflowViewport,
+    );
   }
 
   @override
@@ -79,19 +78,27 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
       return offset;
     }
 
-    final double overscrollPastStart =
-        math.max(position.minScrollExtent - position.pixels, 0.0);
-    final double overscrollPastEnd =
-        math.max(position.pixels - position.maxScrollExtent, 0.0);
-    final double overscrollPast =
-        math.max(overscrollPastStart, overscrollPastEnd);
-    final bool easing = (overscrollPastStart > 0.0 && offset < 0.0) ||
+    final double overscrollPastStart = math.max(
+      position.minScrollExtent - position.pixels,
+      0.0,
+    );
+    final double overscrollPastEnd = math.max(
+      position.pixels - position.maxScrollExtent,
+      0.0,
+    );
+    final double overscrollPast = math.max(
+      overscrollPastStart,
+      overscrollPastEnd,
+    );
+    final bool easing =
+        (overscrollPastStart > 0.0 && offset < 0.0) ||
         (overscrollPastEnd > 0.0 && offset > 0.0);
 
     final double friction = easing
         // Apply less resistance when easing the overscroll vs tensioning.
         ? frictionFactor(
-            (overscrollPast - offset.abs()) / position.viewportDimension)
+            (overscrollPast - offset.abs()) / position.viewportDimension,
+          )
         : frictionFactor(overscrollPast / position.viewportDimension);
     final double direction = offset.sign;
 
@@ -122,7 +129,8 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
       if (value == position.pixels) {
         throw FlutterError.fromParts(<DiagnosticsNode>[
           ErrorSummary(
-              '$runtimeType.applyBoundaryConditions() was called redundantly.'),
+            '$runtimeType.applyBoundaryConditions() was called redundantly.',
+          ),
           ErrorDescription(
             'The proposed new position, $value, is exactly equal to the current position of the '
             'given ${position.runtimeType}, ${position.pixels}.\n'
@@ -130,11 +138,15 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
             'going to actually change the pixels, otherwise it is redundant.',
           ),
           DiagnosticsProperty<ScrollPhysics>(
-              'The physics object in question was', this,
-              style: DiagnosticsTreeStyle.errorProperty),
+            'The physics object in question was',
+            this,
+            style: DiagnosticsTreeStyle.errorProperty,
+          ),
           DiagnosticsProperty<ScrollMetrics>(
-              'The position object in question was', position,
-              style: DiagnosticsTreeStyle.errorProperty),
+            'The position object in question was',
+            position,
+            style: DiagnosticsTreeStyle.errorProperty,
+          ),
         ]);
       }
       return true;
@@ -170,7 +182,9 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
 
   @override
   Simulation? createBallisticSimulation(
-      ScrollMetrics position, double velocity) {
+    ScrollMetrics position,
+    double velocity,
+  ) {
     if (position.outOfRange) {
       return BouncingScrollSimulation(
         spring: const SpringDescription(
@@ -210,8 +224,10 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
   @override
   double carriedMomentum(double existingVelocity) {
     return existingVelocity.sign *
-        math.min(0.000816 * math.pow(existingVelocity.abs(), 1.967).toDouble(),
-            40000.0);
+        math.min(
+          0.000816 * math.pow(existingVelocity.abs(), 1.967).toDouble(),
+          40000.0,
+        );
   }
 
   // Eyeballed from observation to counter the effect of an unintended scroll
@@ -223,9 +239,7 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
 /// Creates sheet physics that has no momentum after the user stops dragging.
 class NoMomentumSheetPhysics extends ScrollPhysics with SheetPhysics {
   /// Creates sheet physics that has no momentum after the user stops dragging.
-  const NoMomentumSheetPhysics({
-    super.parent,
-  });
+  const NoMomentumSheetPhysics({super.parent});
 
   @override
   NoMomentumSheetPhysics applyTo(ScrollPhysics? ancestor) {
@@ -266,7 +280,9 @@ class NoMomentumSheetPhysics extends ScrollPhysics with SheetPhysics {
 
   @override
   Simulation? createBallisticSimulation(
-      ScrollMetrics position, double velocity) {
+    ScrollMetrics position,
+    double velocity,
+  ) {
     if (position.outOfRange) {
       double? end;
       if (position.pixels > position.maxScrollExtent) {
@@ -289,9 +305,7 @@ class NoMomentumSheetPhysics extends ScrollPhysics with SheetPhysics {
 
 class ClampingSheetPhysics extends ScrollPhysics with SheetPhysics {
   /// Creates sheet physics that has no momentum after the user stops dragging.
-  const ClampingSheetPhysics({
-    super.parent,
-  });
+  const ClampingSheetPhysics({super.parent});
 
   @override
   ClampingSheetPhysics applyTo(ScrollPhysics? ancestor) {
@@ -304,7 +318,8 @@ class ClampingSheetPhysics extends ScrollPhysics with SheetPhysics {
       if (value == position.pixels) {
         throw FlutterError.fromParts(<DiagnosticsNode>[
           ErrorSummary(
-              '$runtimeType.applyBoundaryConditions() was called redundantly.'),
+            '$runtimeType.applyBoundaryConditions() was called redundantly.',
+          ),
           ErrorDescription(
             'The proposed new position, $value, is exactly equal to the current position of the '
             'given ${position.runtimeType}, ${position.pixels}.\n'
@@ -312,11 +327,15 @@ class ClampingSheetPhysics extends ScrollPhysics with SheetPhysics {
             'going to actually change the pixels, otherwise it is redundant.',
           ),
           DiagnosticsProperty<ScrollPhysics>(
-              'The physics object in question was', this,
-              style: DiagnosticsTreeStyle.errorProperty),
+            'The physics object in question was',
+            this,
+            style: DiagnosticsTreeStyle.errorProperty,
+          ),
           DiagnosticsProperty<ScrollMetrics>(
-              'The position object in question was', position,
-              style: DiagnosticsTreeStyle.errorProperty),
+            'The position object in question was',
+            position,
+            style: DiagnosticsTreeStyle.errorProperty,
+          ),
         ]);
       }
       return true;
@@ -335,7 +354,9 @@ class ClampingSheetPhysics extends ScrollPhysics with SheetPhysics {
 
   @override
   Simulation? createBallisticSimulation(
-      ScrollMetrics position, double velocity) {
+    ScrollMetrics position,
+    double velocity,
+  ) {
     final Tolerance tolerance = toleranceFor(position);
     if (position.outOfRange) {
       double? end;
@@ -419,21 +440,27 @@ class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
   }
 
   @override
-  double adjustPositionForNewDimensions(
-      {required ScrollMetrics oldPosition,
-      required ScrollMetrics newPosition,
-      required bool isScrolling,
-      required double velocity}) {
+  double adjustPositionForNewDimensions({
+    required ScrollMetrics oldPosition,
+    required ScrollMetrics newPosition,
+    required bool isScrolling,
+    required double velocity,
+  }) {
     final Tolerance tolerance = toleranceFor(newPosition);
     return _getTargetPixels(newPosition, tolerance, velocity);
   }
 
   double _getTargetPixels(
-      ScrollMetrics position, Tolerance tolerance, double velocity) {
+    ScrollMetrics position,
+    Tolerance tolerance,
+    double velocity,
+  ) {
     int page = _getPage(position) ?? 0;
 
-    final double targetPixels =
-        getPixelsFromPage(position, page.clamp(0, stops.length - 1));
+    final double targetPixels = getPixelsFromPage(
+      position,
+      page.clamp(0, stops.length - 1),
+    );
 
     if (targetPixels > position.pixels && velocity < -tolerance.velocity) {
       page -= 1;
@@ -447,7 +474,9 @@ class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
 
   @override
   Simulation? createBallisticSimulation(
-      ScrollMetrics position, double velocity) {
+    ScrollMetrics position,
+    double velocity,
+  ) {
     // If we're out of range and not headed back in range, defer to the parent
     // ballistics, which should put us back in range at a page boundary.
     // if ((velocity <= 0.0 && position.pixels <= position.minScrollExtent) ||
@@ -484,13 +513,14 @@ class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
     if (stops.isEmpty) {
       return 0;
     }
-    final int stop = stops.asMap().entries.reduce(
-      (MapEntry<int, double> prev, MapEntry<int, double> curr) {
-        return (curr.value - extent).abs() < (prev.value - extent).abs()
-            ? curr
-            : prev;
-      },
-    ).key;
+    final int stop = stops.asMap().entries.reduce((
+      MapEntry<int, double> prev,
+      MapEntry<int, double> curr,
+    ) {
+      return (curr.value - extent).abs() < (prev.value - extent).abs()
+          ? curr
+          : prev;
+    }).key;
     return stop;
   }
 
@@ -516,8 +546,10 @@ class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
     return !position.hasPixels
         ? null
         : getPageFromPixels(
-            position.pixels
-                .clamp(position.minScrollExtent, position.maxScrollExtent),
+            position.pixels.clamp(
+              position.minScrollExtent,
+              position.maxScrollExtent,
+            ),
             extentFor(position),
           );
   }
@@ -525,8 +557,9 @@ class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
 
 /// Describes how [SheetScrollable] widgets should behave.
 class SheetBehavior extends ScrollBehavior {
-  static const SheetPhysics _clampingPhysics =
-      NoMomentumSheetPhysics(parent: RangeMaintainingScrollPhysics());
+  static const SheetPhysics _clampingPhysics = NoMomentumSheetPhysics(
+    parent: RangeMaintainingScrollPhysics(),
+  );
 
   @override
   SheetPhysics getScrollPhysics(BuildContext context) {

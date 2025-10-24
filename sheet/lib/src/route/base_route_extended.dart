@@ -53,12 +53,8 @@ class MaterialExtendedPage<T> extends Page<T> {
 // This route uses the builder from the page to build its content. This ensures
 // the content is up to date after page updates.
 class _PageBasedMaterialPageRoute<T> extends MaterialExtendedPageRoute<T> {
-  _PageBasedMaterialPageRoute({
-    required MaterialExtendedPage<T> page,
-  }) : super(
-          settings: page,
-          builder: (BuildContext context) => page.child,
-        );
+  _PageBasedMaterialPageRoute({required MaterialExtendedPage<T> page})
+    : super(settings: page, builder: (BuildContext context) => page.child);
 
   MaterialExtendedPage<T> get _page => settings as MaterialExtendedPage<T>;
 
@@ -120,12 +116,8 @@ class CupertinoExtendedPage<T> extends Page<T> {
 }
 
 class _PageBasedCupertinoPageRoute<T> extends CupertinoExtendedPageRoute<T> {
-  _PageBasedCupertinoPageRoute({
-    required CupertinoExtendedPage<T> page,
-  }) : super(
-          settings: page,
-          builder: (BuildContext context) => page.child,
-        );
+  _PageBasedCupertinoPageRoute({required CupertinoExtendedPage<T> page})
+    : super(settings: page, builder: (BuildContext context) => page.child);
 
   CupertinoExtendedPage<T> get _page => settings as CupertinoExtendedPage<T>;
 

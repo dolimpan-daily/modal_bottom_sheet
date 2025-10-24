@@ -17,33 +17,35 @@ extension SheetTester on WidgetTester {
   Future<void> pumpApp(Widget sheet, {VoidCallback? onButtonPressed}) async {
     await pumpWidget(
       MaterialApp(
-          home: Stack(
-        children: <Widget>[
-          TextButton(
-            child: const Text('TapHere'),
-            onPressed: onButtonPressed,
-          ),
-          sheet,
-        ],
-      )),
+        home: Stack(
+          children: <Widget>[
+            TextButton(
+              child: const Text('TapHere'),
+              onPressed: onButtonPressed,
+            ),
+            sheet,
+          ],
+        ),
+      ),
     );
   }
 
   Future<void> pumpSheet({VoidCallback? onButtonPressed}) async {
     await pumpWidget(
       MaterialApp(
-          home: Stack(
-        children: <Widget>[
-          TextButton(
-            child: const Text('TapHere'),
-            onPressed: onButtonPressed,
-          ),
-          Sheet(
-            fit: fitVariants.currentValue ?? SheetFit.loose,
-            child: childVariants.currentValue ?? Container(),
-          ),
-        ],
-      )),
+        home: Stack(
+          children: <Widget>[
+            TextButton(
+              child: const Text('TapHere'),
+              onPressed: onButtonPressed,
+            ),
+            Sheet(
+              fit: fitVariants.currentValue ?? SheetFit.loose,
+              child: childVariants.currentValue ?? Container(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -92,5 +94,5 @@ final SheetChildVariant childVariants = SheetChildVariant();
 
 class SheetChildVariant extends ValueVariant<Widget> {
   SheetChildVariant()
-      : super(<Widget>{Container(), const SingleChildScrollView()});
+    : super(<Widget>{Container(), const SingleChildScrollView()});
 }

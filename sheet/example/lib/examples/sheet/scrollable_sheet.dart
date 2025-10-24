@@ -37,9 +37,7 @@ class ScrollableSheet extends StatelessWidget {
                       alignment: Alignment.center,
                     );
                   }
-                  return ListTile(
-                    title: Text('Item $index'),
-                  );
+                  return ListTile(title: Text('Item $index'));
                 }),
               ).toList(),
             ),

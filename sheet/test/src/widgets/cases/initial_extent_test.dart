@@ -10,21 +10,14 @@ void main() {
     final Size sheetSize = kScreenRect.size;
 
     testWidgets('default is Zero', (WidgetTester tester) async {
-      await tester.pumpApp(
-        Sheet(
-          child: Container(height: kScreenRect.height),
-        ),
-      );
+      await tester.pumpApp(Sheet(child: Container(height: kScreenRect.height)));
 
       expect(tester.getSheetSize(), equals(sheetSize));
       expect(tester.getSheetTop(), equals(kScreenRect.bottom));
     });
     testWidgets('can be zero', (WidgetTester tester) async {
       await tester.pumpApp(
-        Sheet(
-          initialExtent: 0,
-          child: Container(height: kScreenRect.height),
-        ),
+        Sheet(initialExtent: 0, child: Container(height: kScreenRect.height)),
       );
 
       expect(tester.getSheetSize(), equals(sheetSize));
@@ -42,8 +35,9 @@ void main() {
       expect(tester.getSheetTop(), equals(0));
     });
 
-    testWidgets('bigget than screen defaults to full screen',
-        (WidgetTester tester) async {
+    testWidgets('bigget than screen defaults to full screen', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpApp(
         Sheet(
           initialExtent: 800,
@@ -58,10 +52,7 @@ void main() {
 
     testWidgets('can be a custom number (200)', (WidgetTester tester) async {
       await tester.pumpApp(
-        Sheet(
-          initialExtent: 200,
-          child: Container(height: kScreenRect.height),
-        ),
+        Sheet(initialExtent: 200, child: Container(height: kScreenRect.height)),
       );
       await tester.pumpAndSettle();
       expect(tester.getSheetSize(), equals(sheetSize));

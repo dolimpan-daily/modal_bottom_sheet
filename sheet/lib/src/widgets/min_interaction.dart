@@ -28,7 +28,9 @@ class MinInteractionZone extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, MinInteractionPaddingRenderBox renderObject) {
+    BuildContext context,
+    MinInteractionPaddingRenderBox renderObject,
+  ) {
     renderObject
       ..direction = direction
       ..extent = extent;
@@ -37,8 +39,8 @@ class MinInteractionZone extends SingleChildRenderObjectWidget {
 
 class MinInteractionPaddingRenderBox extends RenderProxyBox {
   MinInteractionPaddingRenderBox(AxisDirection direction, double extent)
-      : _direction = direction,
-        _extent = extent;
+    : _direction = direction,
+      _extent = extent;
 
   AxisDirection _direction;
   AxisDirection get direction => _direction;
@@ -59,8 +61,12 @@ class MinInteractionPaddingRenderBox extends RenderProxyBox {
     Rect minInteractionZone;
     switch (direction) {
       case AxisDirection.up:
-        minInteractionZone =
-            Rect.fromLTRB(0, size.height - extent, size.width, size.height);
+        minInteractionZone = Rect.fromLTRB(
+          0,
+          size.height - extent,
+          size.width,
+          size.height,
+        );
         break;
       case AxisDirection.down:
         minInteractionZone = Rect.fromLTRB(0, 0, size.width, extent);
@@ -69,8 +75,12 @@ class MinInteractionPaddingRenderBox extends RenderProxyBox {
         minInteractionZone = Rect.fromLTRB(0, 0, extent, size.height);
         break;
       case AxisDirection.left:
-        minInteractionZone =
-            Rect.fromLTRB(size.width - extent, 0, size.width, size.height);
+        minInteractionZone = Rect.fromLTRB(
+          size.width - extent,
+          0,
+          size.width,
+          size.height,
+        );
         break;
     }
     return minInteractionZone.contains(position);

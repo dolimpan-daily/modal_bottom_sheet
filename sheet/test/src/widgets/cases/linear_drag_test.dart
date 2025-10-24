@@ -9,10 +9,7 @@ void main() {
   group('Sheet linear drags', () {
     testWidgets('moves expected offset', (WidgetTester tester) async {
       await tester.pumpApp(
-        Sheet(
-          initialExtent: 400,
-          child: Container(height: kScreenRect.height),
-        ),
+        Sheet(initialExtent: 400, child: Container(height: kScreenRect.height)),
       );
       final double topOffset = kScreenRect.bottom - 400;
       expect(tester.getSheetSize(), equals(kScreenRect.size));
@@ -31,15 +28,11 @@ void main() {
       expect(tester.getSheetTop(), equals(kScreenRect.bottom));
     });
 
-    testWidgets('moves maximun the available viewport',
-        (WidgetTester tester) async {
+    testWidgets('moves maximun the available viewport', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpApp(
-        Sheet(
-          initialExtent: 400,
-          child: Container(
-            height: kScreenRect.height,
-          ),
-        ),
+        Sheet(initialExtent: 400, child: Container(height: kScreenRect.height)),
       );
       final double topOffset = kScreenRect.bottom - 400;
       expect(tester.getSheetSize(), equals(kScreenRect.size));
@@ -53,13 +46,11 @@ void main() {
       expect(tester.getSheetTop(), equals(0));
     });
 
-    testWidgets('moves down no more than the bottom of the screen',
-        (WidgetTester tester) async {
+    testWidgets('moves down no more than the bottom of the screen', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpApp(
-        Sheet(
-          initialExtent: 400,
-          child: Container(height: kScreenRect.height),
-        ),
+        Sheet(initialExtent: 400, child: Container(height: kScreenRect.height)),
       );
 
       expect(tester.getSheetSize(), equals(kScreenRect.size));
@@ -73,16 +64,15 @@ void main() {
       expect(tester.getSheetTop(), equals(kScreenRect.bottom));
     });
 
-    testWidgets('does not move more than max extent',
-        (WidgetTester tester) async {
+    testWidgets('does not move more than max extent', (
+      WidgetTester tester,
+    ) async {
       const double height = 500;
       await tester.pumpApp(
         Sheet(
           maxExtent: height,
           initialExtent: 400,
-          child: Container(
-            height: height,
-          ),
+          child: Container(height: height),
         ),
       );
 
@@ -96,15 +86,14 @@ void main() {
       expect(tester.getSheetTop(), equals(kScreenRect.bottom - height));
     });
 
-    testWidgets('does not move less than min extent',
-        (WidgetTester tester) async {
+    testWidgets('does not move less than min extent', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpApp(
         Sheet(
           initialExtent: 400,
           minExtent: 200,
-          child: Container(
-            height: kScreenRect.height,
-          ),
+          child: Container(height: kScreenRect.height),
         ),
       );
 

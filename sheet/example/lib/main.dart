@@ -6,13 +6,15 @@ import 'package:sheet/route.dart';
 
 void main() => runApp(MyApp());
 
-final goRouter = GoRouter(routes: [
-  GoRoute(
-    path: '/',
-    pageBuilder: (context, state) =>
-        MaterialExtendedPage<void>(child: const BottomNavigationScaffold()),
-  ),
-]);
+final goRouter = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      pageBuilder: (context, state) =>
+          MaterialExtendedPage<void>(child: const BottomNavigationScaffold()),
+    ),
+  ],
+);
 
 class MyApp extends StatelessWidget {
   @override
@@ -44,23 +46,21 @@ class _BottomNavigationScaffoldState extends State<BottomNavigationScaffold> {
         Expanded(
           child: IndexedStack(
             index: _currentNavigationIndex,
-            children: const <Widget>[
-              SheetExamplesPage(),
-              RouteExamplePage(),
-            ],
+            children: const <Widget>[SheetExamplesPage(), RouteExamplePage()],
           ),
         ),
         BottomNavigationBar(
-            currentIndex: _currentNavigationIndex,
-            onTap: (int value) {
-              setState(() {
-                _currentNavigationIndex = value;
-              });
-            },
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(icon: Icon(Icons.pages), label: 'Sheet'),
-              BottomNavigationBarItem(icon: Icon(Icons.route), label: 'Route'),
-            ])
+          currentIndex: _currentNavigationIndex,
+          onTap: (int value) {
+            setState(() {
+              _currentNavigationIndex = value;
+            });
+          },
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.pages), label: 'Sheet'),
+            BottomNavigationBarItem(icon: Icon(Icons.route), label: 'Route'),
+          ],
+        ),
       ],
     );
   }

@@ -37,8 +37,9 @@ class _GoRouterBooksAppState extends State<AdvancedGoRouterBooksApp> {
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,
       debugShowCheckedModeBanner: false,
-      theme:
-          brightness == Brightness.light ? ThemeData.light() : ThemeData.dark(),
+      theme: brightness == Brightness.light
+          ? ThemeData.light()
+          : ThemeData.dark(),
       title: 'Books App',
       builder: (BuildContext context, Widget? child) {
         return CupertinoTheme(
@@ -56,88 +57,87 @@ class _GoRouterBooksAppState extends State<AdvancedGoRouterBooksApp> {
     navigatorKey: rootNavigatorKey,
     routes: <GoRoute>[
       GoRoute(
-          path: '/',
-          pageBuilder: (BuildContext context, GoRouterState state) {
-            return MaterialExtendedPage<void>(
-              key: state.pageKey,
-              child: BooksListScreen(
-                books: books,
-                onBrigthnessChanged: (Brightness brightness) {
-                  setState(() {
-                    this.brightness = brightness;
-                  });
+        path: '/',
+        pageBuilder: (BuildContext context, GoRouterState state) {
+          return MaterialExtendedPage<void>(
+            key: state.pageKey,
+            child: BooksListScreen(
+              books: books,
+              onBrigthnessChanged: (Brightness brightness) {
+                setState(() {
+                  this.brightness = brightness;
+                });
+              },
+            ),
+          );
+        },
+        routes: <RouteBase>[
+          ShellRoute(
+            navigatorKey: nestedNavigationKey,
+            parentNavigatorKey: rootNavigatorKey,
+            pageBuilder: (context, state, child) {
+              return CupertinoSheetPage<void>(child: child);
+            },
+            routes: [
+              GoRoute(
+                name: 'book',
+                path: 'book/:bid',
+                parentNavigatorKey: nestedNavigationKey,
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  final String id = state.pathParameters['bid']!;
+                  final Book? book = books.firstWhereOrNull(
+                    (Book b) => b.id == id,
+                  );
+                  return MaterialPage<void>(
+                    key: state.pageKey,
+                    child: BookDetailsScreen(book: book!),
+                  );
                 },
-              ),
-            );
-          },
-          routes: <RouteBase>[
-            ShellRoute(
-                navigatorKey: nestedNavigationKey,
-                parentNavigatorKey: rootNavigatorKey,
-                pageBuilder: (context, state, child) {
-                  return CupertinoSheetPage<void>(child: child);
+                redirect: (context, state) {
+                  final String id = state.pathParameters['bid']!;
+                  final Book? book = books.firstWhereOrNull(
+                    (Book b) => b.id == id,
+                  );
+                  if (book == null) {
+                    return '/404';
+                  }
+                  // no need to redirect at all
+                  return null;
                 },
                 routes: [
                   GoRoute(
-                      name: 'book',
-                      path: 'book/:bid',
-                      parentNavigatorKey: nestedNavigationKey,
-                      pageBuilder: (BuildContext context, GoRouterState state) {
-                        final String id = state.pathParameters['bid']!;
-                        final Book? book =
-                            books.firstWhereOrNull((Book b) => b.id == id);
-                        return MaterialPage<void>(
-                          key: state.pageKey,
-                          child: BookDetailsScreen(
-                            book: book!,
-                          ),
-                        );
-                      },
-                      redirect: (context, state) {
-                        final String id = state.pathParameters['bid']!;
-                        final Book? book =
-                            books.firstWhereOrNull((Book b) => b.id == id);
-                        if (book == null) {
-                          return '/404';
-                        }
-                        // no need to redirect at all
-                        return null;
-                      },
-                      routes: [
-                        GoRoute(
-                          name: 'Reviews',
-                          path: 'reviews',
-                          parentNavigatorKey: nestedNavigationKey,
-                          pageBuilder: (context, state) {
-                            return MaterialPage<void>(
-                              key: state.pageKey,
-                              child: Scaffold(
-                                appBar: AppBar(
-                                  title: const Text('Reviews'),
-                                ),
-                              ),
-                            );
-                          },
+                    name: 'Reviews',
+                    path: 'reviews',
+                    parentNavigatorKey: nestedNavigationKey,
+                    pageBuilder: (context, state) {
+                      return MaterialPage<void>(
+                        key: state.pageKey,
+                        child: Scaffold(
+                          appBar: AppBar(title: const Text('Reviews')),
                         ),
-                      ]),
-                ]),
-            GoRoute(
-              name: 'new',
-              path: 'new',
-              parentNavigatorKey: rootNavigatorKey,
-              pageBuilder: (BuildContext context, GoRouterState state) {
-                return CupertinoSheetPage<void>(
-                  key: state.pageKey,
-                  child: Scaffold(
-                    backgroundColor: Colors.grey[200],
-                    appBar: AppBar(
-                      title: const Text('New'),
-                    ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-          ]),
+                ],
+              ),
+            ],
+          ),
+          GoRoute(
+            name: 'new',
+            path: 'new',
+            parentNavigatorKey: rootNavigatorKey,
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              return CupertinoSheetPage<void>(
+                key: state.pageKey,
+                child: Scaffold(
+                  backgroundColor: Colors.grey[200],
+                  appBar: AppBar(title: const Text('New')),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     ],
   );
 }
@@ -156,14 +156,18 @@ class BooksListScreen extends StatelessWidget {
     final Brightness brightness = Theme.of(context).brightness;
     return Scaffold(
       appBar: CupertinoNavigationBar(
-        leading: BackButton(onPressed: () {
-          Navigator.of(context, rootNavigator: true).pop();
-        }),
+        leading: BackButton(
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pop();
+          },
+        ),
         middle: const Text('Book'),
         trailing: IconButton(
-          icon: Icon(brightness == Brightness.light
-              ? Icons.nightlight_round
-              : Icons.wb_sunny),
+          icon: Icon(
+            brightness == Brightness.light
+                ? Icons.nightlight_round
+                : Icons.wb_sunny,
+          ),
           onPressed: () {
             onBrigthnessChanged(
               brightness == Brightness.light
@@ -178,18 +182,19 @@ class BooksListScreen extends StatelessWidget {
           children: <Widget>[
             for (Book book in books)
               ListTile(
-                  title: Text(book.title),
-                  subtitle: Text(book.author),
-                  onTap: () {
+                title: Text(book.title),
+                subtitle: Text(book.author),
+                onTap: () {
+                  context.go('/book/${book.id}');
+                },
+                trailing: TextButton(
+                  onPressed: () {
                     context.go('/book/${book.id}');
+                    context.go('/book/${book.id}/reviews');
                   },
-                  trailing: TextButton(
-                    onPressed: () {
-                      context.go('/book/${book.id}');
-                      context.go('/book/${book.id}/reviews');
-                    },
-                    child: const Text('Reviews'),
-                  ))
+                  child: const Text('Reviews'),
+                ),
+              ),
           ],
         ),
       ),
@@ -198,17 +203,13 @@ class BooksListScreen extends StatelessWidget {
 }
 
 class BookDetailsScreen extends StatelessWidget {
-  const BookDetailsScreen({
-    required this.book,
-  });
+  const BookDetailsScreen({required this.book});
   final Book book;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CupertinoNavigationBar(
-        middle: Text('Book'),
-      ),
+      appBar: const CupertinoNavigationBar(middle: Text('Book')),
       body: Padding(
         padding: const EdgeInsets.all(8.0) + const EdgeInsets.only(top: 52.0),
         child: Column(
@@ -221,7 +222,7 @@ class BookDetailsScreen extends StatelessWidget {
                 context.go('/book/${book.id}/reviews');
               },
               child: Text('Reviews'),
-            )
+            ),
           ],
         ),
       ),

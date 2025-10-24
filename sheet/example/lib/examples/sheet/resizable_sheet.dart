@@ -17,9 +17,7 @@ class ResizableSheet extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: const Center(
-          child: Text('Hello'),
-        ),
+        body: const Center(child: Text('Hello')),
         bottomNavigationBar: BottomAppBar(
           elevation: 4,
           child: Row(

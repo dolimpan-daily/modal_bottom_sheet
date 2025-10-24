@@ -28,8 +28,9 @@ class _CupertinoBooksAppState extends State<CupertinoBooksApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme:
-          brightness == Brightness.light ? ThemeData.light() : ThemeData.dark(),
+      theme: brightness == Brightness.light
+          ? ThemeData.light()
+          : ThemeData.dark(),
       title: 'Books App',
       builder: (BuildContext context, Widget? child) {
         return CupertinoTheme(
@@ -55,7 +56,7 @@ class _CupertinoBooksAppState extends State<CupertinoBooksApp> {
             CupertinoSheetPage<void>(
               key: ValueKey<Book?>(_selectedBook),
               child: BookDetailsScreen(book: _selectedBook!),
-            )
+            ),
         ],
         onPopPage: (Route<dynamic> route, dynamic result) {
           if (!route.didPop(result)) {
@@ -95,14 +96,18 @@ class BooksListScreen extends StatelessWidget {
     final Brightness brightness = Theme.of(context).brightness;
     return Scaffold(
       appBar: CupertinoNavigationBar(
-        leading: BackButton(onPressed: () {
-          Navigator.of(context, rootNavigator: true).pop();
-        }),
+        leading: BackButton(
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pop();
+          },
+        ),
         middle: const Text('Book'),
         trailing: IconButton(
-          icon: Icon(brightness == Brightness.light
-              ? Icons.nightlight_round
-              : Icons.wb_sunny),
+          icon: Icon(
+            brightness == Brightness.light
+                ? Icons.nightlight_round
+                : Icons.wb_sunny,
+          ),
           onPressed: () {
             onBrigthnessChanged(
               brightness == Brightness.light
@@ -120,7 +125,7 @@ class BooksListScreen extends StatelessWidget {
                 title: Text(book.title),
                 subtitle: Text(book.author),
                 onTap: () => onTapped(book),
-              )
+              ),
           ],
         ),
       ),
@@ -129,17 +134,13 @@ class BooksListScreen extends StatelessWidget {
 }
 
 class BookDetailsScreen extends StatelessWidget {
-  const BookDetailsScreen({
-    required this.book,
-  });
+  const BookDetailsScreen({required this.book});
   final Book book;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CupertinoNavigationBar(
-        middle: Text('Book'),
-      ),
+      appBar: const CupertinoNavigationBar(middle: Text('Book')),
       body: Padding(
         padding: const EdgeInsets.all(8.0) + const EdgeInsets.only(top: 52.0),
         child: Column(
@@ -153,14 +154,13 @@ class BookDetailsScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute<void>(builder: (BuildContext context) {
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text('Invalid'),
-              ),
-            );
-          }));
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) {
+                return Scaffold(appBar: AppBar(title: const Text('Invalid')));
+              },
+            ),
+          );
         },
       ),
     );

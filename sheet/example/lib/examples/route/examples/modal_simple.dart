@@ -8,10 +8,13 @@ class SimpleModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-        child: CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-          leading: Container(), middle: const Text('Modal Page')),
-      child: const Center(),
-    ));
+      child: CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          leading: Container(),
+          middle: const Text('Modal Page'),
+        ),
+        child: const Center(),
+      ),
+    );
   }
 }

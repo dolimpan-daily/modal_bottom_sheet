@@ -38,17 +38,15 @@ class _BouncingSheetPageState extends State<BouncingSheetPage> {
   void animateSheet() {
     controller
         .animateTo(
-      100,
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeOut,
-    )
-        .then(
-      (_) {
-        setState(() {
-          minExtent = 100;
+          100,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeOut,
+        )
+        .then((_) {
+          setState(() {
+            minExtent = 100;
+          });
         });
-      },
-    );
   }
 
   @override

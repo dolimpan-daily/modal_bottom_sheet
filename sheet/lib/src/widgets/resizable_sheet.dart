@@ -36,7 +36,9 @@ class ResizableSheetChild extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, RenderResizableSheetChildBox renderObject) {
+    BuildContext context,
+    RenderResizableSheetChildBox renderObject,
+  ) {
     // Order dependency: The offset setter reads the axis direction.
     renderObject
       ..offset = offset
@@ -51,10 +53,10 @@ class RenderResizableSheetChildBox extends RenderShiftedBox {
     required double minExtent,
     RenderBox? child,
     bool resizable = true,
-  })  : _offset = offset,
-        _minExtent = minExtent,
-        _resizable = resizable,
-        super(child);
+  }) : _offset = offset,
+       _minExtent = minExtent,
+       _resizable = resizable,
+       super(child);
 
   ViewportOffset get offset => _offset;
   ViewportOffset _offset;
@@ -109,10 +111,7 @@ class RenderResizableSheetChildBox extends RenderShiftedBox {
     // If not resizable we send constraints to child and
     // parent size is the same as child
     if (!resizable) {
-      child!.layout(
-        constraints,
-        parentUsesSize: true,
-      );
+      child!.layout(constraints, parentUsesSize: true);
       size = child!.size;
       childParentData.offset = Offset.zero;
       return;

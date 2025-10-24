@@ -15,53 +15,36 @@ void main() {
 
     group('jumpTo', () {
       testWidgets('a custom extent - 400', (WidgetTester tester) async {
-        await tester.pumpApp(
-          Sheet(child: child),
-        );
+        await tester.pumpApp(Sheet(child: child));
 
         tester.getSheetController().jumpTo(400);
         expect(tester.getSheetExtent(), 400);
       });
 
       testWidgets('minExtent', (WidgetTester tester) async {
-        await tester.pumpApp(
-          Sheet(
-            minExtent: 100,
-            child: child,
-          ),
-        );
+        await tester.pumpApp(Sheet(minExtent: 100, child: child));
 
         tester.getSheetController().jumpTo(100);
         expect(tester.getSheetExtent(), 100);
       });
       testWidgets('maxExtent', (WidgetTester tester) async {
-        await tester.pumpApp(
-          Sheet(
-            maxExtent: 400,
-            child: child,
-          ),
-        );
+        await tester.pumpApp(Sheet(maxExtent: 400, child: child));
 
         tester.getSheetController().jumpTo(400);
         expect(tester.getSheetExtent(), 400);
       });
 
       testWidgets('less than 0 clamps to 0', (WidgetTester tester) async {
-        await tester.pumpApp(
-          Sheet(child: child),
-        );
+        await tester.pumpApp(Sheet(child: child));
 
         tester.getSheetController().jumpTo(-100);
         expect(tester.getSheetExtent(), equals(0));
       });
-      testWidgets('less than minExtent clamps to minExtent',
-          (WidgetTester tester) async {
+      testWidgets('less than minExtent clamps to minExtent', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpApp(
-          Sheet(
-            minExtent: 100,
-            initialExtent: 200,
-            child: child,
-          ),
+          Sheet(minExtent: 100, initialExtent: 200, child: child),
         );
         expect(tester.getSheetExtent(), equals(200));
 
@@ -69,26 +52,17 @@ void main() {
         expect(tester.getSheetExtent(), equals(100));
       });
 
-      testWidgets(
-          'more than than screenHeight clamps to screenHeight '
+      testWidgets('more than than screenHeight clamps to screenHeight '
           'if maxExtent is null', (WidgetTester tester) async {
-        await tester.pumpApp(
-          Sheet(
-            child: child,
-          ),
-        );
+        await tester.pumpApp(Sheet(child: child));
 
         tester.getSheetController().jumpTo(kScreenHeight + 100);
         expect(tester.getSheetExtent(), equals(kScreenHeight));
       });
-      testWidgets('more than maxExtent clamps to maxExtent',
-          (WidgetTester tester) async {
-        await tester.pumpApp(
-          Sheet(
-            maxExtent: 400,
-            child: child,
-          ),
-        );
+      testWidgets('more than maxExtent clamps to maxExtent', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpApp(Sheet(maxExtent: 400, child: child));
 
         tester.getSheetController().jumpTo(500);
         expect(tester.getSheetExtent(), 400);
@@ -97,12 +71,7 @@ void main() {
 
     testWidgets('relativeJumpTo', (WidgetTester tester) async {
       await tester.pumpApp(
-        Sheet(
-          initialExtent: 200,
-          child: Container(
-            height: kScreenHeight,
-          ),
-        ),
+        Sheet(initialExtent: 200, child: Container(height: kScreenHeight)),
       );
 
       expect(tester.getSheetExtent(), equals(200));
@@ -116,19 +85,16 @@ void main() {
 
     testWidgets('animateTo', (WidgetTester tester) async {
       await tester.pumpApp(
-        Sheet(
-          initialExtent: 200,
-          child: Container(
-            height: kScreenHeight,
-          ),
-        ),
+        Sheet(initialExtent: 200, child: Container(height: kScreenHeight)),
       );
 
       expect(tester.getSheetExtent(), equals(200));
 
-      tester
-          .getSheetController()
-          .animateTo(400, curve: curve, duration: duration);
+      tester.getSheetController().animateTo(
+        400,
+        curve: curve,
+        duration: duration,
+      );
       await tester.pumpAndSettle();
       final controller = tester.getSheetController();
       expect(tester.getSheetExtent(), equals(400));
@@ -148,12 +114,7 @@ void main() {
 
     testWidgets('relativeAnimateTo', (WidgetTester tester) async {
       await tester.pumpApp(
-        Sheet(
-          initialExtent: 200,
-          child: Container(
-            height: kScreenHeight,
-          ),
-        ),
+        Sheet(initialExtent: 200, child: Container(height: kScreenHeight)),
       );
       final controller = tester.getSheetController();
       expect(tester.getSheetExtent(), equals(200));
@@ -167,15 +128,11 @@ void main() {
       expect(tester.getSheetExtent(), equals(kScreenHeight * 0.5));
     });
 
-    testWidgets('relativeAnimateTo with min xtent',
-        (WidgetTester tester) async {
+    testWidgets('relativeAnimateTo with min xtent', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpApp(
-        Sheet(
-          initialExtent: 200,
-          child: Container(
-            height: kScreenHeight,
-          ),
-        ),
+        Sheet(initialExtent: 200, child: Container(height: kScreenHeight)),
       );
       final controller = tester.getSheetController();
       expect(tester.getSheetExtent(), equals(200));

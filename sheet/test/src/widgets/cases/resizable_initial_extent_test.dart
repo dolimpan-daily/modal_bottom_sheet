@@ -7,38 +7,28 @@ import '../../../screen_size_test.dart';
 
 void main() {
   group('Sheet with resizable', () {
-    testWidgets('has zero height when child has zero height',
-        (WidgetTester tester) async {
+    testWidgets('has zero height when child has zero height', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpApp(
-        Sheet(
-          resizable: true,
-          initialExtent: 0,
-          child: Container(),
-        ),
+        Sheet(resizable: true, initialExtent: 0, child: Container()),
       );
 
       expect(tester.getSheetHeight(), equals(0));
     });
     testWidgets('can have zero initial extent', (WidgetTester tester) async {
       await tester.pumpApp(
-        Sheet(
-          resizable: true,
-          initialExtent: 0,
-          child: Container(),
-        ),
+        Sheet(resizable: true, initialExtent: 0, child: Container()),
       );
 
       expect(tester.getSheetTop(), equals(kScreenRect.bottom));
     });
 
-    testWidgets('can have a initial extent same as screen heigth',
-        (WidgetTester tester) async {
+    testWidgets('can have a initial extent same as screen heigth', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpApp(
-        Sheet(
-          resizable: true,
-          initialExtent: 600,
-          child: Container(),
-        ),
+        Sheet(resizable: true, initialExtent: 600, child: Container()),
       );
 
       expect(tester.getSheetHeight(), equals(600));
@@ -47,11 +37,7 @@ void main() {
 
     testWidgets('can have a custom extent', (WidgetTester tester) async {
       await tester.pumpApp(
-        Sheet(
-          resizable: true,
-          initialExtent: 200,
-          child: Container(),
-        ),
+        Sheet(resizable: true, initialExtent: 200, child: Container()),
       );
 
       expect(tester.getSheetHeight(), equals(200));
@@ -59,37 +45,48 @@ void main() {
     });
 
     testWidgets(
-        'height is same as minResizableExtent when current extent is less than it ',
-        (WidgetTester tester) async {
-      await tester.pumpApp(
-        Sheet(
-          resizable: true,
-          minExtent: 0,
-          maxExtent: 600,
-          initialExtent: 600,
-          minResizableExtent: 200,
-          child: Container(
-            width: double.infinity,
+      'height is same as minResizableExtent when current extent is less than it ',
+      (WidgetTester tester) async {
+        await tester.pumpApp(
+          Sheet(
+            resizable: true,
+            minExtent: 0,
+            maxExtent: 600,
+            initialExtent: 600,
+            minResizableExtent: 200,
+            child: Container(width: double.infinity),
           ),
-        ),
-      );
+        );
 
-      expect(tester.getSheetHeight(), equals(600),
-          reason: 'Height should be same as initialExtent');
-      expect(tester.getSheetTop(), equals(0),
-          reason: 'It should be positioned with a initialExtent');
+        expect(
+          tester.getSheetHeight(),
+          equals(600),
+          reason: 'Height should be same as initialExtent',
+        );
+        expect(
+          tester.getSheetTop(),
+          equals(0),
+          reason: 'It should be positioned with a initialExtent',
+        );
 
-      await tester.dragFrom(
-        tester.getTopLeft(findSheet()),
-        const Offset(0.0, 500.0),
-        touchSlopY: 0.0,
-      );
-      await tester.pumpAndSettle();
-      expect(tester.getSheetTop(), kScreenRect.bottom - 100,
-          reason: 'It should be positioned with a initialExtent');
-      expect(tester.getSheetHeight(), equals(200),
-          reason: 'Height should be same as minResizableExtent');
-    });
+        await tester.dragFrom(
+          tester.getTopLeft(findSheet()),
+          const Offset(0.0, 500.0),
+          touchSlopY: 0.0,
+        );
+        await tester.pumpAndSettle();
+        expect(
+          tester.getSheetTop(),
+          kScreenRect.bottom - 100,
+          reason: 'It should be positioned with a initialExtent',
+        );
+        expect(
+          tester.getSheetHeight(),
+          equals(200),
+          reason: 'Height should be same as minResizableExtent',
+        );
+      },
+    );
   });
 
   group('Sheet with SheetFit.loose', () {
@@ -97,9 +94,7 @@ void main() {
       await tester.pumpApp(
         Sheet(
           fit: SheetFit.loose,
-          child: Container(
-            child: const Text('Item'),
-          ),
+          child: Container(child: const Text('Item')),
         ),
       );
 
@@ -115,9 +110,7 @@ void main() {
         Sheet(
           fit: SheetFit.loose,
           initialExtent: 20,
-          child: Container(
-            child: const Text(text),
-          ),
+          child: Container(child: const Text(text)),
         ),
       );
 

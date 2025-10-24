@@ -6,17 +6,16 @@ import '../../helpers.dart';
 
 void main() {
   group('SheetMediaQuery', () {
-    testWidgets('top padding is zero if sheet is not inside top safe area',
-        (tester) async {
+    testWidgets('top padding is zero if sheet is not inside top safe area', (
+      tester,
+    ) async {
       final childKey = UniqueKey();
       await tester.pumpWidget(
         MaterialApp(
           home: MediaQuery(
             data: MediaQueryData(padding: EdgeInsets.only(top: 20)),
             child: Sheet(
-              child: SheetMediaQuery(
-                child: SizedBox.expand(key: childKey),
-              ),
+              child: SheetMediaQuery(child: SizedBox.expand(key: childKey)),
             ),
           ),
         ),
@@ -26,8 +25,7 @@ void main() {
       expect(MediaQuery.of(context).padding.top, 0);
     });
 
-    testWidgets(
-        'top padding is same as top safe area if sheet is fully open '
+    testWidgets('top padding is same as top safe area if sheet is fully open '
         'before viewportDimension is rendered', (tester) async {
       // viewportDimension is not available in first frame
       final childKey = UniqueKey();
@@ -37,9 +35,7 @@ void main() {
             data: MediaQueryData(padding: EdgeInsets.only(top: 20)),
             child: Sheet(
               initialExtent: 600,
-              child: SheetMediaQuery(
-                child: SizedBox.expand(key: childKey),
-              ),
+              child: SheetMediaQuery(child: SizedBox.expand(key: childKey)),
             ),
           ),
         ),
@@ -49,8 +45,7 @@ void main() {
       expect(MediaQuery.of(context).padding.top, 20);
     });
 
-    testWidgets(
-        'top padding is same as top safe area if sheet is fully open '
+    testWidgets('top padding is same as top safe area if sheet is fully open '
         'after viewportDimension is rendered', (tester) async {
       final childKey = UniqueKey();
       await tester.pumpWidget(
@@ -58,9 +53,7 @@ void main() {
           home: MediaQuery(
             data: MediaQueryData(padding: EdgeInsets.only(top: 20)),
             child: Sheet(
-              child: SheetMediaQuery(
-                child: SizedBox.expand(key: childKey),
-              ),
+              child: SheetMediaQuery(child: SizedBox.expand(key: childKey)),
             ),
           ),
         ),
@@ -81,9 +74,7 @@ void main() {
             child: Sheet(
               initialExtent: 600 - offsetToTest,
               child: SizedBox(
-                child: SheetMediaQuery(
-                  child: SizedBox.expand(key: childKey),
-                ),
+                child: SheetMediaQuery(child: SizedBox.expand(key: childKey)),
               ),
             ),
           ),

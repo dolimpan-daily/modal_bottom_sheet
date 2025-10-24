@@ -11,7 +11,9 @@ class ModalWithNavigator extends StatelessWidget {
         onGenerateRoute: (_) => MaterialPageRoute<void>(
           builder: (BuildContext newContext) => CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
-                leading: Container(), middle: const Text('Modal Page')),
+              leading: Container(),
+              middle: const Text('Modal Page'),
+            ),
             child: SafeArea(
               bottom: false,
               child: ListView(
@@ -20,13 +22,14 @@ class ModalWithNavigator extends StatelessWidget {
                 children: ListTile.divideTiles(
                   context: newContext,
                   tiles: List<Widget>.generate(
-                      100,
-                      (int index) => ListTile(
-                            title: const Text('Item'),
-                            onTap: () {
-                              pushRoute(newContext, context);
-                            },
-                          )),
+                    100,
+                    (int index) => ListTile(
+                      title: const Text('Item'),
+                      onTap: () {
+                        pushRoute(newContext, context);
+                      },
+                    ),
+                  ),
                 ).toList(),
               ),
             ),
@@ -40,16 +43,14 @@ class ModalWithNavigator extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (BuildContext context) => CupertinoPageScaffold(
-          navigationBar: const CupertinoNavigationBar(
-            middle: Text('New Page'),
-          ),
+          navigationBar: const CupertinoNavigationBar(middle: Text('New Page')),
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
               MaterialButton(
                 onPressed: () => Navigator.of(modalContext).pop(),
                 child: const Text('touch here'),
-              )
+              ),
             ],
           ),
         ),

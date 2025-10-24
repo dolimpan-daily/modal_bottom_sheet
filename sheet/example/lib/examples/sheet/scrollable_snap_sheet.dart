@@ -8,9 +8,7 @@ class ScrollableSnapSheet extends StatelessWidget {
       child: Sheet(
         physics: const SnapSheetPhysics(
           stops: <double>[0.2, 0.5, 1],
-          parent: BouncingSheetPhysics(
-            overflowViewport: true,
-          ),
+          parent: BouncingSheetPhysics(overflowViewport: true),
         ),
         initialExtent: 500,
         child: Container(
@@ -42,9 +40,7 @@ class ScrollableSnapSheet extends StatelessWidget {
                       alignment: Alignment.center,
                     );
                   }
-                  return ListTile(
-                    title: Text('Item $index'),
-                  );
+                  return ListTile(title: Text('Item $index'));
                 }),
               ).toList(),
             ),

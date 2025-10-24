@@ -19,14 +19,16 @@ class SheetConfigurationPage extends StatelessWidget {
     return MultiProvider(
       providers: <SingleChildWidget>[
         ChangeNotifierProvider<SheetController>(
-            create: (BuildContext context) => SheetController()),
+          create: (BuildContext context) => SheetController(),
+        ),
         ChangeNotifierProvider<SheetConfigurationController>(
           create: (BuildContext context) => SheetConfigurationController(),
         ),
       ],
       builder: (BuildContext context, Widget? child) {
-        final SheetConfiguration configuration =
-            context.watch<SheetConfigurationController>().value;
+        final SheetConfiguration configuration = context
+            .watch<SheetConfigurationController>()
+            .value;
 
         return Stack(
           children: <Widget>[
@@ -36,10 +38,10 @@ class SheetConfigurationPage extends StatelessWidget {
                 child: const Text('Edit'),
                 onPressed: () {
                   context.read<SheetController>().relativeAnimateTo(
-                        1,
-                        duration: const Duration(milliseconds: 400),
-                        curve: Curves.easeOut,
-                      );
+                    1,
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeOut,
+                  );
                 },
               ),
               sheet: Sheet(
@@ -47,15 +49,16 @@ class SheetConfigurationPage extends StatelessWidget {
                 minExtent: configuration.minExtent,
                 maxExtent: configuration.maxExtent,
                 padding: EdgeInsets.all(configuration.padding ?? 0),
-                physics: <SheetPhysics>[
-                  if (configuration.bounce) const BouncingSheetPhysics(),
-                  if (!configuration.draggable)
-                    const NeverDraggableSheetPhysics(),
-                ].fold(
-                  null,
-                  (SheetPhysics? previousValue, SheetPhysics element) =>
-                      element.applyTo(previousValue) as SheetPhysics,
-                ),
+                physics:
+                    <SheetPhysics>[
+                      if (configuration.bounce) const BouncingSheetPhysics(),
+                      if (!configuration.draggable)
+                        const NeverDraggableSheetPhysics(),
+                    ].fold(
+                      null,
+                      (SheetPhysics? previousValue, SheetPhysics element) =>
+                          element.applyTo(previousValue) as SheetPhysics,
+                    ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                     configuration.borderRadius ?? 0,
@@ -85,8 +88,8 @@ class FilterEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SheetConfigurationController controller =
-        context.watch<SheetConfigurationController>();
+    final SheetConfigurationController controller = context
+        .watch<SheetConfigurationController>();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -98,161 +101,166 @@ class FilterEditor extends StatelessWidget {
           child: const Text('Close'),
           onPressed: () {
             context.read<SheetController>().relativeAnimateTo(
-                  0,
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeOut,
-                );
+              0,
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeOut,
+            );
           },
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const SectionTitle('Size'),
-              ...ListTile.divideTiles(
-                context: context,
-                tiles: <Widget>[
-                  ListTile(
-                    title: const Text('Minimun Extent'),
-                    trailing: NumTextField(onChanged: (int? value) {
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            const SectionTitle('Size'),
+            ...ListTile.divideTiles(
+              context: context,
+              tiles: <Widget>[
+                ListTile(
+                  title: const Text('Minimun Extent'),
+                  trailing: NumTextField(
+                    onChanged: (int? value) {
                       controller.value = controller.value.copyWith(
                         minExtent: value?.toDouble(),
                       );
-                    }),
+                    },
                   ),
-                  ListTile(
-                    title: const Text('Maximun Extent'),
-                    trailing: NumTextField(onChanged: (int? value) {
+                ),
+                ListTile(
+                  title: const Text('Maximun Extent'),
+                  trailing: NumTextField(
+                    onChanged: (int? value) {
                       controller.value = controller.value.copyWith(
                         maxExtent: value?.toDouble(),
                       );
-                    }),
+                    },
                   ),
-                  ListTile(
-                    title: const Text('Force expand'),
-                    trailing: CupertinoSwitch(
-                      activeColor: Theme.of(context).primaryColor,
-                      value: controller.value.fit == SheetFit.expand,
-                      onChanged: (bool value) {
-                        controller.value = controller.value.copyWith(
-                          fit: value == true ? SheetFit.expand : SheetFit.loose,
-                        );
-                      },
-                    ),
+                ),
+                ListTile(
+                  title: const Text('Force expand'),
+                  trailing: CupertinoSwitch(
+                    activeColor: Theme.of(context).primaryColor,
+                    value: controller.value.fit == SheetFit.expand,
+                    onChanged: (bool value) {
+                      controller.value = controller.value.copyWith(
+                        fit: value == true ? SheetFit.expand : SheetFit.loose,
+                      );
+                    },
                   ),
-                ],
-              ),
-              const SectionTitle('Appareance'),
-              ...ListTile.divideTiles(
-                context: context,
-                tiles: <Widget>[
-                  ListTile(
-                    title: const Padding(
-                      padding: EdgeInsets.only(left: 16, right: 16, top: 0),
-                      child: Text('Child'),
-                    ),
-                    contentPadding: EdgeInsets.zero,
-                    subtitle: SingleChildScrollView(
-                      padding: const EdgeInsets.all(16),
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: <Widget>[
-                          for (final SheetChildType type
-                              in SheetChildType.values)
-                            Container(
-                              margin: const EdgeInsets.only(right: 16),
-                              width: kHeight * kAspectRatio,
-                              height: kHeight,
-                              decoration: ShapeDecoration(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  side: BorderSide(
-                                    color: controller.value.type == type
-                                        ? Theme.of(context).primaryColor
-                                        : Colors.grey[200]!,
-                                    width: 2,
-                                  ),
+                ),
+              ],
+            ),
+            const SectionTitle('Appareance'),
+            ...ListTile.divideTiles(
+              context: context,
+              tiles: <Widget>[
+                ListTile(
+                  title: const Padding(
+                    padding: EdgeInsets.only(left: 16, right: 16, top: 0),
+                    child: Text('Child'),
+                  ),
+                  contentPadding: EdgeInsets.zero,
+                  subtitle: SingleChildScrollView(
+                    padding: const EdgeInsets.all(16),
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: <Widget>[
+                        for (final SheetChildType type in SheetChildType.values)
+                          Container(
+                            margin: const EdgeInsets.only(right: 16),
+                            width: kHeight * kAspectRatio,
+                            height: kHeight,
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                side: BorderSide(
+                                  color: controller.value.type == type
+                                      ? Theme.of(context).primaryColor
+                                      : Colors.grey[200]!,
+                                  width: 2,
                                 ),
                               ),
-                              child: InkWell(
-                                borderRadius: BorderRadius.circular(12),
-                                onTap: () {
-                                  controller.value = controller.value.copyWith(
-                                    type: type,
-                                  );
-                                },
-                                child: IgnorePointer(
-                                  child: FittedBox(
-                                    child: Container(
-                                      width: kHeight * kAspectRatio * 2,
-                                      height: kHeight * 2,
-                                      child: type.child(),
-                                    ),
+                            ),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12),
+                              onTap: () {
+                                controller.value = controller.value.copyWith(
+                                  type: type,
+                                );
+                              },
+                              child: IgnorePointer(
+                                child: FittedBox(
+                                  child: Container(
+                                    width: kHeight * kAspectRatio * 2,
+                                    height: kHeight * 2,
+                                    child: type.child(),
                                   ),
                                 ),
                               ),
                             ),
-                        ],
-                      ),
+                          ),
+                      ],
                     ),
                   ),
-                  ListTile(
-                    title: const Text('Border Radius'),
-                    subtitle: const Text('max 50'),
-                    trailing: NumTextField(
-                      onChanged: (int? value) {
-                        controller.value = controller.value.copyWith(
-                          borderRadius: value?.toDouble(),
-                        );
-                      },
-                      maxNumber: 50,
-                    ),
+                ),
+                ListTile(
+                  title: const Text('Border Radius'),
+                  subtitle: const Text('max 50'),
+                  trailing: NumTextField(
+                    onChanged: (int? value) {
+                      controller.value = controller.value.copyWith(
+                        borderRadius: value?.toDouble(),
+                      );
+                    },
+                    maxNumber: 50,
                   ),
-                  ListTile(
-                    title: const Text('Padding'),
-                    subtitle: const Text('max 50'),
-                    trailing: NumTextField(
-                        maxNumber: 50,
-                        onChanged: (int? value) {
-                          controller.value = controller.value.copyWith(
-                            padding: value?.toDouble(),
-                          );
-                        }),
+                ),
+                ListTile(
+                  title: const Text('Padding'),
+                  subtitle: const Text('max 50'),
+                  trailing: NumTextField(
+                    maxNumber: 50,
+                    onChanged: (int? value) {
+                      controller.value = controller.value.copyWith(
+                        padding: value?.toDouble(),
+                      );
+                    },
                   ),
-                ],
-              ),
-              const SectionTitle('Physics'),
-              ...ListTile.divideTiles(
-                context: context,
-                tiles: <Widget>[
-                  ListTile(
-                    title: const Text('BouncingSheetPhysics'),
-                    trailing: CupertinoSwitch(
-                      activeColor: Theme.of(context).primaryColor,
-                      value: controller.value.bounce,
-                      onChanged: (bool value) {
-                        controller.value = controller.value.copyWith(
-                          bounce: value,
-                        );
-                      },
-                    ),
+                ),
+              ],
+            ),
+            const SectionTitle('Physics'),
+            ...ListTile.divideTiles(
+              context: context,
+              tiles: <Widget>[
+                ListTile(
+                  title: const Text('BouncingSheetPhysics'),
+                  trailing: CupertinoSwitch(
+                    activeColor: Theme.of(context).primaryColor,
+                    value: controller.value.bounce,
+                    onChanged: (bool value) {
+                      controller.value = controller.value.copyWith(
+                        bounce: value,
+                      );
+                    },
                   ),
-                  ListTile(
-                    title: const Text('NeverDraggableSheetPhysics'),
-                    trailing: CupertinoSwitch(
-                      activeColor: Theme.of(context).primaryColor,
-                      value: !controller.value.draggable,
-                      onChanged: (bool value) {
-                        controller.value = controller.value.copyWith(
-                          draggable: !value,
-                        );
-                      },
-                    ),
+                ),
+                ListTile(
+                  title: const Text('NeverDraggableSheetPhysics'),
+                  trailing: CupertinoSwitch(
+                    activeColor: Theme.of(context).primaryColor,
+                    value: !controller.value.draggable,
+                    onChanged: (bool value) {
+                      controller.value = controller.value.copyWith(
+                        draggable: !value,
+                      );
+                    },
                   ),
-                ],
-              ),
-            ]),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -286,8 +294,10 @@ class NumTextField extends StatelessWidget {
           ),
           fillColor: Colors.grey[200],
           filled: true,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 4,
+          ),
         ),
       ),
     );
@@ -315,10 +325,7 @@ class NumericalRangeFormatter extends TextInputFormatter {
 }
 
 class SectionTitle extends StatelessWidget {
-  const SectionTitle(
-    this.text, {
-    super.key,
-  });
+  const SectionTitle(this.text, {super.key});
 
   final String text;
 
@@ -326,10 +333,7 @@ class SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.titleLarge,
-      ),
+      child: Text(text, style: Theme.of(context).textTheme.titleLarge),
     );
   }
 }

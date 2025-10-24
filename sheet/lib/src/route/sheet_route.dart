@@ -49,8 +49,8 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
     this.willPopThreshold = _kWillPopThreshold,
     this.decorationBuilder,
     super.settings,
-  })  : transitionDuration = duration ?? _kSheetTransitionDuration,
-        super(fullscreenDialog: true);
+  }) : transitionDuration = duration ?? _kSheetTransitionDuration,
+       super(fullscreenDialog: true);
 
   /// Builds the primary contents of the route.
   final WidgetBuilder builder;
@@ -146,8 +146,11 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
   }
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
     return _SheetRouteContainer(sheetRoute: this);
   }
 
@@ -168,13 +171,17 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
 
   @override
   bool canDriveSecondaryTransitionForPreviousRoute(
-      Route<dynamic> previousRoute) {
+    Route<dynamic> previousRoute,
+  ) {
     return true;
   }
 
   @override
-  Widget buildSecondaryTransitionForPreviousRoute(BuildContext context,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildSecondaryTransitionForPreviousRoute(
+    BuildContext context,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     return child;
   }
 
@@ -226,26 +233,26 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
 ///  * [SheetPageRoute], which is the [PageRoute] version of this class
 class SheetPage<T> extends Page<T> {
   /// Creates a material page.
-  const SheetPage(
-      {required this.child,
-      this.maintainState = true,
-      super.key,
-      super.name,
-      super.arguments,
-      this.initialExtent = 1,
-      this.stops,
-      this.draggable = true,
-      this.fit = SheetFit.expand,
-      this.physics,
-      this.animationCurve,
-      Duration? duration,
-      this.sheetLabel,
-      this.barrierLabel,
-      this.barrierColor = _kBarrierColor,
-      this.barrierDismissible = true,
-      this.willPopThreshold = _kWillPopThreshold,
-      this.decorationBuilder})
-      : transitionDuration = duration ?? _kSheetTransitionDuration;
+  const SheetPage({
+    required this.child,
+    this.maintainState = true,
+    super.key,
+    super.name,
+    super.arguments,
+    this.initialExtent = 1,
+    this.stops,
+    this.draggable = true,
+    this.fit = SheetFit.expand,
+    this.physics,
+    this.animationCurve,
+    Duration? duration,
+    this.sheetLabel,
+    this.barrierLabel,
+    this.barrierColor = _kBarrierColor,
+    this.barrierDismissible = true,
+    this.willPopThreshold = _kWillPopThreshold,
+    this.decorationBuilder,
+  }) : transitionDuration = duration ?? _kSheetTransitionDuration;
 
   /// Relative extent up to where the sheet is animated when pushed for
   /// the first time.
@@ -346,7 +353,8 @@ class _PageBasedSheetRoute<T> extends SheetRoute<T> {
   SheetPage<T> get _page => settings as SheetPage<T>;
 
   @override
-  WidgetBuilder get builder => (context) => _page.child;
+  WidgetBuilder get builder =>
+      (context) => _page.child;
 
   @override
   bool get maintainState => _page.maintainState;
@@ -376,16 +384,17 @@ class __SheetRouteContainerState extends State<_SheetRouteContainer>
     WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
       _sheetController
           .relativeAnimateTo(
-        route.initialExtent,
-        duration: route.transitionDuration,
-        curve: route.animationCurve ?? Curves.easeOut,
-      )
+            route.initialExtent,
+            duration: route.transitionDuration,
+            curve: route.animationCurve ?? Curves.easeOut,
+          )
           .then((_) {
-        if (_sheetController.hasClients) {
-          (_sheetController.position.context as SheetContext)
-              .initialAnimationFinished = true;
-        }
-      });
+            if (_sheetController.hasClients) {
+              (_sheetController.position.context as SheetContext)
+                      .initialAnimationFinished =
+                  true;
+            }
+          });
     });
     super.initState();
   }
@@ -409,13 +418,13 @@ class __SheetRouteContainerState extends State<_SheetRouteContainer>
         return;
       }
       if (!_routeController.isAnimating) {
-        final double animationValue =
-            _sheetController.animation.value.mapDistance(
-          fromLow: 0,
-          fromHigh: route.initialExtent,
-          toLow: 0,
-          toHigh: 1,
-        );
+        final double animationValue = _sheetController.animation.value
+            .mapDistance(
+              fromLow: 0,
+              fromHigh: route.initialExtent,
+              toLow: 0,
+              toHigh: 1,
+            );
         _routeController.value = animationValue;
         if (_sheetController.animation.value == 0) {
           _routeController.value = 0.001;
@@ -471,19 +480,17 @@ class __SheetRouteContainerState extends State<_SheetRouteContainer>
       _sheetController.position.stopPreventingDrag();
       route.onPopInvoked(false);
     } else {
-      route.willPop().then(
-        (RoutePopDisposition disposition) {
-          if (disposition == RoutePopDisposition.pop) {
-            _sheetController.relativeAnimateTo(
-              0,
-              duration: const Duration(milliseconds: 400),
-              curve: Curves.easeInOut,
-            );
-          } else {
-            _sheetController.position.stopPreventingDrag();
-          }
-        },
-      );
+      route.willPop().then((RoutePopDisposition disposition) {
+        if (disposition == RoutePopDisposition.pop) {
+          _sheetController.relativeAnimateTo(
+            0,
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeInOut,
+          );
+        } else {
+          _sheetController.position.stopPreventingDrag();
+        }
+      });
     }
   }
 

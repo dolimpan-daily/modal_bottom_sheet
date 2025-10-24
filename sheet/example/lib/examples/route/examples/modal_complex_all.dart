@@ -15,25 +15,26 @@ class ComplexModal extends StatelessWidget {
           final sheetNavigator = Navigator.of(context);
           if (!didPop) {
             showCupertinoDialog<void>(
-                context: context,
-                builder: (BuildContext context) => CupertinoAlertDialog(
-                      title: const Text('Should Close?'),
-                      actions: <Widget>[
-                        CupertinoButton(
-                          child: const Text('Yes'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            sheetNavigator.pop();
-                          },
-                        ),
-                        CupertinoButton(
-                          child: const Text('No'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    ));
+              context: context,
+              builder: (BuildContext context) => CupertinoAlertDialog(
+                title: const Text('Should Close?'),
+                actions: <Widget>[
+                  CupertinoButton(
+                    child: const Text('Yes'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      sheetNavigator.pop();
+                    },
+                  ),
+                  CupertinoButton(
+                    child: const Text('No'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            );
           }
         },
         child: Navigator(
@@ -41,7 +42,9 @@ class ComplexModal extends StatelessWidget {
             builder: (BuildContext context) => Builder(
               builder: (BuildContext context) => CupertinoPageScaffold(
                 navigationBar: CupertinoNavigationBar(
-                    leading: Container(), middle: const Text('Modal Page')),
+                  leading: Container(),
+                  middle: const Text('Modal Page'),
+                ),
                 child: SafeArea(
                   bottom: false,
                   child: ListView(
@@ -58,14 +61,15 @@ class ComplexModal extends StatelessWidget {
                               MaterialPageRoute<void>(
                                 builder: (BuildContext context) =>
                                     CupertinoPageScaffold(
-                                  navigationBar: const CupertinoNavigationBar(
-                                    middle: Text('New Page'),
-                                  ),
-                                  child: Stack(
-                                    fit: StackFit.expand,
-                                    children: const <Widget>[],
-                                  ),
-                                ),
+                                      navigationBar:
+                                          const CupertinoNavigationBar(
+                                            middle: Text('New Page'),
+                                          ),
+                                      child: Stack(
+                                        fit: StackFit.expand,
+                                        children: const <Widget>[],
+                                      ),
+                                    ),
                               ),
                             );
                           },

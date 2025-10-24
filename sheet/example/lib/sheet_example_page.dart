@@ -46,7 +46,9 @@ class SheetExamplesPage extends StatelessWidget {
             ExampleTile.sheet('Bouncing', const BounceTopSheet()),
             ExampleTile.sheet('Bouncing overflow', const BounceOverflowSheet()),
             ExampleTile.sheet(
-                'Clamped sheet (min and max extent)', ClampedSheet()),
+              'Clamped sheet (min and max extent)',
+              ClampedSheet(),
+            ),
             const SectionTitle('SCROLLING'),
             ExampleTile.sheet('Scrollabe sheet', ScrollableSheet()),
             ExampleTile.sheet('Scrollabe snap sheet', ScrollableSnapSheet()),
@@ -54,17 +56,22 @@ class SheetExamplesPage extends StatelessWidget {
             ExampleTile.sheet('Floating sheet', FloatingSheet()),
             ExampleTile.sheet('Fit and Snap sheet', FitSnapSheet()),
             ExampleTile.sheet(
-                'Fit, Resizable and Bouncing sheet', FitResizableSheet()),
+              'Fit, Resizable and Bouncing sheet',
+              FitResizableSheet(),
+            ),
             ExampleTile.sheet('Textfield sheet', TextFieldSheet()),
             ExampleTile.sheet('Foldable screen', FoldableScreenFloatingSheet()),
             const ExampleTile(
-                title: 'Customizable sheet', page: SheetConfigurationPage()),
+              title: 'Customizable sheet',
+              page: SheetConfigurationPage(),
+            ),
             const SectionTitle('SHOWCASE'),
             ExampleTile(
-                leading: const Icon(Icons.map),
-                title: 'Map BottomSheet Example',
-                page: AdvancedSnapSheetPage()),
-            const SizedBox(height: 60)
+              leading: const Icon(Icons.map),
+              title: 'Map BottomSheet Example',
+              page: AdvancedSnapSheetPage(),
+            ),
+            const SizedBox(height: 60),
           ].addItemInBetween(const Divider(height: 1)),
         ),
       ),
@@ -75,18 +82,12 @@ class SheetExamplesPage extends StatelessWidget {
 class SectionTitle extends StatelessWidget {
   final String title;
 
-  const SectionTitle(
-    this.title, {
-    super.key,
-  });
+  const SectionTitle(this.title, {super.key});
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.bodySmall,
-      ),
+      child: Text(title, style: Theme.of(context).textTheme.bodySmall),
     );
   }
 }
@@ -94,8 +95,7 @@ class SectionTitle extends StatelessWidget {
 extension ListUtils<T> on List<T> {
   List<T> addItemInBetween(T item) => length <= 1
       ? this
-      : sublist(1).fold(
-          <T>[first],
-          (List<T> r, T element) => <T>[...r, item, element],
-        );
+      : sublist(
+          1,
+        ).fold(<T>[first], (List<T> r, T element) => <T>[...r, item, element]);
 }

@@ -19,9 +19,7 @@ extension on WidgetTester {
         child: MinInteractionZone(
           direction: direction,
           extent: interationZoneExtent,
-          child: Container(
-            width: double.infinity,
-          ),
+          child: Container(width: double.infinity),
         ),
       ),
     );
@@ -70,8 +68,9 @@ void main() {
             onTap: mockOnTap,
           );
 
-          await tester
-              .tapAt(Offset(kScreenSize.width / 2, interationZoneExtent / 2));
+          await tester.tapAt(
+            Offset(kScreenSize.width / 2, interationZoneExtent / 2),
+          );
           verify(mockOnTap).called(1);
         });
         testWidgets('Pointer at bottom left', (WidgetTester tester) async {
@@ -91,7 +90,8 @@ void main() {
             onTap: mockOnTap,
           );
           await tester.tapAt(
-              Offset(kScreenSize.width - 0.1, interationZoneExtent - 0.1));
+            Offset(kScreenSize.width - 0.1, interationZoneExtent - 0.1),
+          );
           verify(mockOnTap).called(1);
         });
       });
@@ -101,19 +101,20 @@ void main() {
           final Rect interactionRect = <AxisDirection, Rect>{
             AxisDirection.up:
                 Offset(0, kScreenSize.height - interationZoneExtent) &
-                    Size(kScreenSize.width, interationZoneExtent),
+                Size(kScreenSize.width, interationZoneExtent),
             AxisDirection.down:
                 Offset.zero & Size(kScreenSize.width, interationZoneExtent),
             AxisDirection.right:
                 Offset.zero & Size(interationZoneExtent, kScreenSize.height),
             AxisDirection.left:
                 Offset(kScreenSize.width - interationZoneExtent, 0) &
-                    Size(interationZoneExtent, kScreenSize.height),
+                Size(interationZoneExtent, kScreenSize.height),
           }[direction]!;
 
           group('Pointer detected inside', () {
-            final Rect insideArea =
-                EdgeInsets.all(0.1).deflateRect(interactionRect);
+            final Rect insideArea = EdgeInsets.all(
+              0.1,
+            ).deflateRect(interactionRect);
             testWidgets('at top left', (WidgetTester tester) async {
               await tester.pumpInteractionZone(
                 direction: direction,
@@ -164,8 +165,9 @@ void main() {
             });
           });
           group('Pointer not detected outside', () {
-            final Rect outsideArea =
-                EdgeInsets.all(0.1).inflateRect(interactionRect);
+            final Rect outsideArea = EdgeInsets.all(
+              0.1,
+            ).inflateRect(interactionRect);
             testWidgets('at top left', (WidgetTester tester) async {
               await tester.pumpInteractionZone(
                 direction: direction,
@@ -228,20 +230,20 @@ void main() {
         AxisDirection direction = AxisDirection.down;
         await tester.pumpWidget(
           StatefulBuilder(
-              builder: (BuildContext context, StateSetter stateSetter) {
-            setState = stateSetter;
-            return MinInteractionZone(
-              direction: direction,
-              extent: 200,
-              child: Container(
-                width: double.infinity,
-              ),
-            );
-          }),
+            builder: (BuildContext context, StateSetter stateSetter) {
+              setState = stateSetter;
+              return MinInteractionZone(
+                direction: direction,
+                extent: 200,
+                child: Container(width: double.infinity),
+              );
+            },
+          ),
         );
-        final MinInteractionPaddingRenderBox renderObject =
-            tester.renderObject<MinInteractionPaddingRenderBox>(
-                find.byType(MinInteractionZone));
+        final MinInteractionPaddingRenderBox renderObject = tester
+            .renderObject<MinInteractionPaddingRenderBox>(
+              find.byType(MinInteractionZone),
+            );
         expect(renderObject.direction, direction);
 
         direction = AxisDirection.up;
@@ -255,20 +257,20 @@ void main() {
         double extent = 200;
         await tester.pumpWidget(
           StatefulBuilder(
-              builder: (BuildContext context, StateSetter stateSetter) {
-            setState = stateSetter;
-            return MinInteractionZone(
-              direction: AxisDirection.down,
-              extent: extent,
-              child: Container(
-                width: double.infinity,
-              ),
-            );
-          }),
+            builder: (BuildContext context, StateSetter stateSetter) {
+              setState = stateSetter;
+              return MinInteractionZone(
+                direction: AxisDirection.down,
+                extent: extent,
+                child: Container(width: double.infinity),
+              );
+            },
+          ),
         );
-        final MinInteractionPaddingRenderBox renderObject =
-            tester.renderObject<MinInteractionPaddingRenderBox>(
-                find.byType(MinInteractionZone));
+        final MinInteractionPaddingRenderBox renderObject = tester
+            .renderObject<MinInteractionPaddingRenderBox>(
+              find.byType(MinInteractionZone),
+            );
         expect(renderObject.extent, extent);
 
         extent = 300;

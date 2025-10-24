@@ -20,8 +20,11 @@ class _FitSheetState extends State<FitSnapSheet> {
   }
 
   void animateSheet() {
-    controller.relativeAnimateTo(0.2,
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+    controller.relativeAnimateTo(
+      0.2,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeOut,
+    );
   }
 
   @override
@@ -39,9 +42,7 @@ class _FitSheetState extends State<FitSnapSheet> {
         relative: false,
         parent: BouncingSheetPhysics(),
       ),
-      child: Container(
-        height: 500,
-      ),
+      child: Container(height: 500),
       controller: controller,
     );
   }

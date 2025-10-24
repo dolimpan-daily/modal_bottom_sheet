@@ -23,9 +23,7 @@ class ModalWithPageView extends StatelessWidget {
                   context: context,
                   tiles: List<Widget>.generate(
                     100,
-                    (int index) => const ListTile(
-                      title: Text('Item'),
-                    ),
+                    (int index) => const ListTile(title: Text('Item')),
                   ),
                 ).toList(),
               ),

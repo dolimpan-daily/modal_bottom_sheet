@@ -20,10 +20,7 @@ class _TextFieldSheetState extends State<TextFieldSheet>
   Widget build(BuildContext context) {
     return Sheet(
       minExtent: 100,
-      physics: const SnapSheetPhysics(
-        stops: <double>[0.4, 1],
-        relative: true,
-      ),
+      physics: const SnapSheetPhysics(stops: <double>[0.4, 1], relative: true),
       initialExtent: 500,
       controller: controller,
       child: Container(
@@ -44,9 +41,7 @@ class _TextFieldSheetState extends State<TextFieldSheet>
             child: Column(
               children: const <Widget>[
                 SizedBox(height: 400),
-                TextField(
-                  scrollPadding: EdgeInsets.all(200),
-                ),
+                TextField(scrollPadding: EdgeInsets.all(200)),
                 SizedBox(height: 400),
               ],
             ),

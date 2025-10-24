@@ -7,14 +7,14 @@ class ModalWillScope extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-        child: PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) async {
-        if (didPop) {
-          return;
-        }
-        final sheetNavigator = Navigator.of(context);
-        showCupertinoDialog<void>(
+      child: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) async {
+          if (didPop) {
+            return;
+          }
+          final sheetNavigator = Navigator.of(context);
+          showCupertinoDialog<void>(
             context: context,
             builder: (BuildContext context) {
               return CupertinoAlertDialog(
@@ -35,13 +35,17 @@ class ModalWillScope extends StatelessWidget {
                   ),
                 ],
               );
-            });
-      },
-      child: CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-            leading: Container(), middle: const Text('Modal Page')),
-        child: const Center(),
+            },
+          );
+        },
+        child: CupertinoPageScaffold(
+          navigationBar: CupertinoNavigationBar(
+            leading: Container(),
+            middle: const Text('Modal Page'),
+          ),
+          child: const Center(),
+        ),
       ),
-    ));
+    );
   }
 }

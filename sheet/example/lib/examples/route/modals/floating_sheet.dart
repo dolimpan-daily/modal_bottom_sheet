@@ -27,14 +27,11 @@ class FloatingModal extends StatelessWidget {
 }
 
 class FloatingSheetRoute<T> extends SheetRoute<T> {
-  FloatingSheetRoute({
-    required WidgetBuilder builder,
-  }) : super(
-          builder: (BuildContext context) {
-            return FloatingModal(
-              child: Builder(builder: builder),
-            );
-          },
-          fit: SheetFit.loose,
-        );
+  FloatingSheetRoute({required WidgetBuilder builder})
+    : super(
+        builder: (BuildContext context) {
+          return FloatingModal(child: Builder(builder: builder));
+        },
+        fit: SheetFit.loose,
+      );
 }

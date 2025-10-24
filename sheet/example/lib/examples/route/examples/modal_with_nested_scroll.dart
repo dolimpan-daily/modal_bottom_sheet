@@ -21,11 +21,13 @@ class NestedScrollModal extends StatelessWidget {
                 // scroll view thinks it has not been scrolled.
                 // This is not necessary if the "headerSliverBuilder" only builds
                 // widgets that do not overlap the next sliver.
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                  context,
+                ),
                 sliver: SliverAppBar(
-                  title:
-                      const Text('Books'), // This is the title in the app bar.
+                  title: const Text(
+                    'Books',
+                  ), // This is the title in the app bar.
                   pinned: true,
                   expandedHeight: 150.0,
                   // The "forceElevated" property causes the SliverAppBar to show
@@ -74,7 +76,8 @@ class NestedScrollModal extends StatelessWidget {
                           // above.
                           handle:
                               NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                  context),
+                                context,
+                              ),
                         ),
                         SliverPadding(
                           padding: const EdgeInsets.all(8.0),
@@ -91,9 +94,7 @@ class NestedScrollModal extends StatelessWidget {
                               (BuildContext context, int index) {
                                 // This builder is called for each child.
                                 // In this example, we just number each list item.
-                                return ListTile(
-                                  title: Text('Item $index'),
-                                );
+                                return ListTile(title: Text('Item $index'));
                               },
                               // The childCount of the SliverChildBuilderDelegate
                               // specifies how many children this inner list

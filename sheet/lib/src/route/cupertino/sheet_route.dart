@@ -70,7 +70,8 @@ class _CupertinoSheetDecorationBuilder extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: topRadius),
-              color: backgroundColor ??
+              color:
+                  backgroundColor ??
                   CupertinoColors.systemBackground.resolveFrom(context),
             ),
             child: MediaQuery.removePadding(
@@ -103,16 +104,16 @@ class CupertinoSheetRoute<T> extends SheetRoute<T> {
     super.fit,
     super.draggable = true,
   }) : super(
-          builder: (BuildContext context) {
-            return _CupertinoSheetDecorationBuilder(
-              child: Builder(builder: builder),
-              backgroundColor: backgroundColor,
-              topRadius: _kCupertinoSheetTopRadius,
-            );
-          },
-          animationCurve: _kCupertinoSheetCurve,
-          initialExtent: initialStop,
-        );
+         builder: (BuildContext context) {
+           return _CupertinoSheetDecorationBuilder(
+             child: Builder(builder: builder),
+             backgroundColor: backgroundColor,
+             topRadius: _kCupertinoSheetTopRadius,
+           );
+         },
+         animationCurve: _kCupertinoSheetCurve,
+         initialExtent: initialStop,
+       );
 
   final SheetController _sheetController = SheetController();
 
@@ -130,17 +131,15 @@ class CupertinoSheetRoute<T> extends SheetRoute<T> {
   @override
   Widget buildSheet(BuildContext context, Widget child) {
     SheetPhysics? effectivePhysics = BouncingSheetPhysics(
-        parent: SnapSheetPhysics(
-      stops: stops ?? <double>[0, 1],
-      parent: physics,
-    ));
+      parent: SnapSheetPhysics(stops: stops ?? <double>[0, 1], parent: physics),
+    );
     if (!draggable) {
       effectivePhysics = const NeverDraggableSheetPhysics();
     }
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final double topMargin =
         math.max(_kSheetMinimalOffset, mediaQuery.padding.top) +
-            _kPreviousRouteVisibleOffset;
+        _kPreviousRouteVisibleOffset;
     return Sheet.raw(
       initialExtent: initialExtent,
       decorationBuilder: decorationBuilder,
@@ -172,8 +171,10 @@ class CupertinoSheetRoute<T> extends SheetRoute<T> {
         final double scale = 1 - progress / 10;
         final double distanceWithScale =
             (topOffset + _kPreviousRouteVisibleOffset) * 0.9;
-        final Offset offset =
-            Offset(0, progress * (topOffset - distanceWithScale));
+        final Offset offset = Offset(
+          0,
+          progress * (topOffset - distanceWithScale),
+        );
         return Transform.translate(
           offset: offset,
           child: Transform.scale(
@@ -188,13 +189,17 @@ class CupertinoSheetRoute<T> extends SheetRoute<T> {
 
   @override
   bool canDriveSecondaryTransitionForPreviousRoute(
-      Route<dynamic> previousRoute) {
+    Route<dynamic> previousRoute,
+  ) {
     return previousRoute is! CupertinoSheetRoute;
   }
 
   @override
-  Widget buildSecondaryTransitionForPreviousRoute(BuildContext context,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildSecondaryTransitionForPreviousRoute(
+    BuildContext context,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     final Animation<double> delayAnimation = CurvedAnimation(
       parent: _sheetController.animation,
       curve: Interval(
@@ -239,7 +244,8 @@ class CupertinoSheetBottomRouteTransition extends StatelessWidget {
   Radius _getRadiusForDevice(MediaQueryData mediaQuery) {
     final double topPadding = mediaQuery.padding.top;
     // Round corners for iPhone devices from X to the newest version
-    final bool isRoundedDevice = defaultTargetPlatform == TargetPlatform.iOS &&
+    final bool isRoundedDevice =
+        defaultTargetPlatform == TargetPlatform.iOS &&
         topPadding > _kRoundedDeviceStatusBarHeight;
     return isRoundedDevice ? _kRoundedDeviceRadius : Radius.zero;
   }
@@ -347,12 +353,12 @@ class _PageBasedCupertinoSheetRoute<T> extends CupertinoSheetRoute<T> {
     super.backgroundColor,
     super.maintainState,
   }) : super(
-          settings: page,
-          builder: (BuildContext context) {
-            return (ModalRoute.of(context)!.settings as CupertinoSheetPage<T>)
-                .child;
-          },
-        );
+         settings: page,
+         builder: (BuildContext context) {
+           return (ModalRoute.of(context)!.settings as CupertinoSheetPage<T>)
+               .child;
+         },
+       );
 
   CupertinoSheetPage<T> get _page => settings as CupertinoSheetPage<T>;
 

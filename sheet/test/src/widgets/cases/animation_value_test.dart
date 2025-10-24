@@ -29,8 +29,9 @@ void main() {
       );
       expect(tester.getSheetController().animation.value, 1);
     });
-    testWidgets('is 0.5 when is between minExtent and maxExtent',
-        (tester) async {
+    testWidgets('is 0.5 when is between minExtent and maxExtent', (
+      tester,
+    ) async {
       await tester.pumpApp(
         Sheet(
           minExtent: 100,
@@ -45,11 +46,7 @@ void main() {
 
     testWidgets('is 1 when minExtent equals maxExtent', (tester) async {
       await tester.pumpApp(
-        Sheet(
-          minExtent: 100,
-          maxExtent: 100,
-          child: SizedBox(height: 100),
-        ),
+        Sheet(minExtent: 100, maxExtent: 100, child: SizedBox(height: 100)),
       );
       expect(tester.getSheetController().animation.value, 1);
     });

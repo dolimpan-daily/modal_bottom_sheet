@@ -7,8 +7,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sheet/sheet.dart';
 
 class ScrollPositionListener extends StatefulWidget {
-  const ScrollPositionListener(
-      {super.key, required this.child, required this.log});
+  const ScrollPositionListener({
+    super.key,
+    required this.child,
+    required this.log,
+  });
 
   final Widget child;
   final ValueChanged<String> log;
@@ -45,49 +48,51 @@ class _ScrollPositionListenerState extends State<ScrollPositionListener> {
 
 void main() {
   testWidgets(
-      'SheetScrollable.of() dependent rebuilds when SheetScrollable position changes',
-      (WidgetTester tester) async {
-    late String logValue;
-    final SheetController controller = SheetController();
+    'SheetScrollable.of() dependent rebuilds when SheetScrollable position changes',
+    (WidgetTester tester) async {
+      late String logValue;
+      final SheetController controller = SheetController();
 
-    // Changing the SingleChildScrollView's physics causes the
-    // ScrollController's ScrollPosition to be rebuilt.
+      // Changing the SingleChildScrollView's physics causes the
+      // ScrollController's ScrollPosition to be rebuilt.
 
-    Widget buildFrame(SheetPhysics? physics) {
-      return MaterialApp(
-        home: Sheet(
-          controller: controller,
-          physics: physics,
-          child: ScrollPositionListener(
-            log: (String s) {
-              logValue = s;
-            },
-            child: const SizedBox(height: 400.0),
+      Widget buildFrame(SheetPhysics? physics) {
+        return MaterialApp(
+          home: Sheet(
+            controller: controller,
+            physics: physics,
+            child: ScrollPositionListener(
+              log: (String s) {
+                logValue = s;
+              },
+              child: const SizedBox(height: 400.0),
+            ),
           ),
-        ),
+        );
+      }
+
+      await tester.pumpWidget(buildFrame(null));
+      expect(logValue, 'didChangeDependencies 0.0');
+
+      controller.jumpTo(100.0);
+      expect(logValue, 'listener 100.0');
+
+      await tester.pumpWidget(buildFrame(const AlwaysDraggableSheetPhysics()));
+      expect(logValue, 'didChangeDependencies 100.0');
+
+      controller.jumpTo(200.0);
+      expect(logValue, 'listener 200.0');
+
+      controller.jumpTo(300.0);
+      expect(logValue, 'listener 300.0');
+
+      await tester.pumpWidget(
+        buildFrame(const SnapSheetPhysics(stops: <double>[0, 1])),
       );
-    }
+      expect(logValue, 'didChangeDependencies 300.0');
 
-    await tester.pumpWidget(buildFrame(null));
-    expect(logValue, 'didChangeDependencies 0.0');
-
-    controller.jumpTo(100.0);
-    expect(logValue, 'listener 100.0');
-
-    await tester.pumpWidget(buildFrame(const AlwaysDraggableSheetPhysics()));
-    expect(logValue, 'didChangeDependencies 100.0');
-
-    controller.jumpTo(200.0);
-    expect(logValue, 'listener 200.0');
-
-    controller.jumpTo(300.0);
-    expect(logValue, 'listener 300.0');
-
-    await tester
-        .pumpWidget(buildFrame(const SnapSheetPhysics(stops: <double>[0, 1])));
-    expect(logValue, 'didChangeDependencies 300.0');
-
-    controller.jumpTo(400.0);
-    expect(logValue, 'listener 400.0');
-  });
+      controller.jumpTo(400.0);
+      expect(logValue, 'listener 400.0');
+    },
+  );
 }

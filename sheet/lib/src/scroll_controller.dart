@@ -85,7 +85,8 @@ class SheetPrimaryScrollPosition extends ScrollPositionWithSingleContext {
     final bool canDragForward = delta >= 0 && pixels <= minScrollExtent;
 
     // Can drag up if sheet is not yet on top and list is already on top
-    final bool canDragBackwards = delta < 0 &&
+    final bool canDragBackwards =
+        delta < 0 &&
         sheetPosition.pixels < sheetPosition.maxScrollExtent &&
         pixels <= minScrollExtent;
 
@@ -102,8 +103,10 @@ class SheetPrimaryScrollPosition extends ScrollPositionWithSingleContext {
       if (sheetPosition.activity is! _SheetScrollActivity) {
         sheetPosition.beginActivity(_SheetScrollActivity(sheetPosition));
       }
-      final double sheetDelta =
-          sheetPosition.physics.applyPhysicsToUserOffset(sheetPosition, delta);
+      final double sheetDelta = sheetPosition.physics.applyPhysicsToUserOffset(
+        sheetPosition,
+        delta,
+      );
       sheetPosition.applyUserOffset(sheetDelta);
       return;
     } else {

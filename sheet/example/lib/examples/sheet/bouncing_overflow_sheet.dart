@@ -9,9 +9,7 @@ class BounceOverflowSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Sheet(
       physics: const BouncingSheetPhysics(overflowViewport: false),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Example')),
-      ),
+      child: Scaffold(appBar: AppBar(title: const Text('Example'))),
       minExtent: 100,
     );
   }

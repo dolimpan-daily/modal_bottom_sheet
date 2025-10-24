@@ -47,15 +47,15 @@ class _FitSheetState extends State<FitResizableSheet> {
         height: 500,
         child: Scaffold(
           backgroundColor: Colors.white,
-          body: const Center(
-            child: Text('Hello'),
-          ),
+          body: const Center(child: Text('Hello')),
           bottomNavigationBar: BottomAppBar(
             elevation: 4,
             child: Row(
               children: <Widget>[
                 IconButton(
-                    icon: const Icon(Icons.access_alarm), onPressed: () {})
+                  icon: const Icon(Icons.access_alarm),
+                  onPressed: () {},
+                ),
               ],
             ),
           ),
